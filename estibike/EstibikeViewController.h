@@ -1,5 +1,5 @@
 //
-//  AppDelegate.h
+//  EstibikeViewController.h
 //  estibike
 //
 //  Created by John Cieslik-Bridgen on 29/09/14.
@@ -7,13 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "PSLocationManager.h"
 #import <Foundation/Foundation.h>
 
-
-@interface AppDelegate : UIResponder <UIApplicationDelegate>
-
-@property (strong, nonatomic) UIWindow *window;
-
+@interface EstibikeViewController : UIViewController <PSLocationManagerDelegate>
 
 @end
-
