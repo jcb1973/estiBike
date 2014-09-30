@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
     <dependencies>
-        <deployment defaultVersion="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
@@ -56,11 +55,23 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Not tracking" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SkD-gO-rPU">
+                                <rect key="frame" x="198" y="12" width="135" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="II9-rC-dsm"/>
+                                    <constraint firstAttribute="width" constant="135" id="xaD-0d-Sdn"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="bAe-Wb-BuY" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="20" id="4c7-2n-eZh"/>
                             <constraint firstItem="bAe-Wb-BuY" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="20" id="KVO-Bx-5YV"/>
+                            <constraint firstItem="SkD-gO-rPU" firstAttribute="leading" secondItem="bAe-Wb-BuY" secondAttribute="trailing" constant="64" id="VUa-Tg-QOa"/>
+                            <constraint firstItem="SkD-gO-rPU" firstAttribute="top" secondItem="kh9-bI-dsS" secondAttribute="topMargin" constant="12" id="WTI-Jl-Qk0"/>
                             <constraint firstItem="Hbl-GB-3cu" firstAttribute="top" secondItem="bAe-Wb-BuY" secondAttribute="bottom" constant="8" id="ems-cG-TVe"/>
                             <constraint firstItem="Cq5-Yw-Awa" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" id="lVs-Qf-HMk"/>
                             <constraint firstItem="Hbl-GB-3cu" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" id="mj2-lP-NoB"/>
@@ -72,6 +83,7 @@
                     <connections>
                         <outlet property="currentSpeed" destination="Cq5-Yw-Awa" id="okM-NC-Z3p"/>
                         <outlet property="distanceLabel" destination="Hbl-GB-3cu" id="aUS-zS-j9d"/>
+                        <outlet property="statusLabel" destination="SkD-gO-rPU" id="3kW-1x-17V"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>

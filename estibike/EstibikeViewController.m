@@ -16,15 +16,23 @@
 
 @property (nonatomic, weak) IBOutlet UILabel *distanceLabel;
 @property (nonatomic, weak) IBOutlet UILabel *currentSpeed;
+@property (nonatomic, weak) IBOutlet UILabel *statusLabel;
 @property (nonatomic, strong) EBGPXTrack *track;
 
 @end
 
 @implementation EstibikeViewController
 
+- (void) resetCounters
+{
+    self.currentSpeed.text = @"Current speed";
+    self.distanceLabel.text = @"Distance travelled";
+    self.statusLabel.text = @"Not tracking";
+}
 - (IBAction) stopTracking:(id)sender
 {
     NSLog(@"stopTracking:+");
+    [self resetCounters];
     [self logGPXToFile];
     [[PSLocationManager sharedLocationManager] stopLocationUpdates];
     NSLog(@"stopTracking:-");
@@ -78,7 +86,10 @@
 {
     NSLog(@"startTracking:+");
     [self setUpGPX];
-    [[PSLocationManager sharedLocationManager] prepLocationUpdates];
+    self.statusLabel.text = @"Tracking";
+    self.currentSpeed.text = @"waiting...";
+    self.distanceLabel.text = @"waiting...";
+
     [[PSLocationManager sharedLocationManager] startLocationUpdates];
     NSLog(@"startTracking:-");
     
@@ -87,6 +98,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    [[PSLocationManager sharedLocationManager] prepLocationUpdates];
     [PSLocationManager sharedLocationManager].delegate = self;
 }
 
@@ -101,7 +113,12 @@
     NSLog(@"called waypoint+");
     EBGPXTrackpoint *point = [[EBGPXTrackpoint alloc] initWithLongitude:[NSNumber numberWithDouble:waypoint.coordinate.longitude] latitude:[NSNumber numberWithDouble:waypoint.coordinate.latitude]];
     [self.track addTrackpoint:point];
-    self.currentSpeed.text = [NSString stringWithFormat:@"%.2f m/s", [[PSLocationManager sharedLocationManager] currentSpeed]];
+    if ([[PSLocationManager sharedLocationManager] currentSpeed] > 0) {
+        double kmPerHour = [[PSLocationManager sharedLocationManager] currentSpeed] * 60 * 60 / 1000 ;
+        self.currentSpeed.text = [NSString stringWithFormat:@"%.2f km/h", kmPerHour];
+        
+    }
+    
     NSLog(@"called waypoint-");
 }
 
