@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		2409C8821E114A01A430671B /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4342C9827CC4CF3B6AB936D /* libPods.a */; };
 		522720F019DBEF4600E40183 /* EBBackgroundWorker.m in Sources */ = {isa = PBXBuildFile; fileRef = 522720EF19DBEF4600E40183 /* EBBackgroundWorker.m */; };
+		522720F319DC1E6F00E40183 /* splash_screen.png in Resources */ = {isa = PBXBuildFile; fileRef = 522720F219DC1E6F00E40183 /* splash_screen.png */; };
 		52C9100819D93726008F9A1C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 52C9100719D93726008F9A1C /* main.m */; };
 		52C9100B19D93726008F9A1C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 52C9100A19D93726008F9A1C /* AppDelegate.m */; };
 		52C9101119D93726008F9A1C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 52C9100F19D93726008F9A1C /* Main.storyboard */; };
@@ -36,6 +37,7 @@
 		23921973A5A2D63C2A5A2E48 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		522720EE19DBEF4600E40183 /* EBBackgroundWorker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EBBackgroundWorker.h; sourceTree = "<group>"; };
 		522720EF19DBEF4600E40183 /* EBBackgroundWorker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EBBackgroundWorker.m; sourceTree = "<group>"; };
+		522720F219DC1E6F00E40183 /* splash_screen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = splash_screen.png; path = ../../Desktop/splash_screen.png; sourceTree = "<group>"; };
 		52C9100219D93726008F9A1C /* estibike.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = estibike.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		52C9100619D93726008F9A1C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		52C9100719D93726008F9A1C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -80,9 +82,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		522720F119DC1E4C00E40183 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				522720F219DC1E6F00E40183 /* splash_screen.png */,
+			);
+			name = Images;
+			sourceTree = "<group>";
+		};
 		52C90FF919D93726008F9A1C = {
 			isa = PBXGroup;
 			children = (
+				522720F119DC1E4C00E40183 /* Images */,
 				52C9102E19D954BC008F9A1C /* CoreLocation.framework */,
 				52C9100419D93726008F9A1C /* estibike */,
 				52C9101E19D93726008F9A1C /* estibikeTests */,
@@ -256,6 +267,7 @@
 			files = (
 				52C9101119D93726008F9A1C /* Main.storyboard in Resources */,
 				52C9101619D93726008F9A1C /* LaunchScreen.xib in Resources */,
+				522720F319DC1E6F00E40183 /* splash_screen.png in Resources */,
 				52C9101319D93726008F9A1C /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

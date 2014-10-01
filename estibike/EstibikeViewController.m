@@ -49,11 +49,7 @@
     NSLog(@"forceStartTracking:+");
     
     if (![[EBBackgroundWorker sharedManager] isTracking]) {
-        
-        self.statusLabel.text = @"Tracking";
-        self.currentSpeed.text = @"waiting...";
-        self.distanceLabel.text = @"waiting...";
-    
+        [self setLabelsToTrackingState];
         [[EBBackgroundWorker sharedManager] startTracking];
         
     } else {
@@ -70,6 +66,15 @@
 
     // I'm the person who is going to listen to you... Any time you call method from protocol, I'll deal with it.
     [[EBBackgroundWorker sharedManager] setDelegate:self];
+    //Create UIImageView
+    UIImageView *backgroundImageView = [[UIImageView alloc] initWithFrame:self.view.frame]; //or in your case you should use your _blurView
+    backgroundImageView.image = [UIImage imageNamed:@"splash_screen.png"];
+    
+    //set it as a subview
+    [self.view addSubview:backgroundImageView]; //in your case, again, use _blurView
+    
+    //just in case
+    [self.view sendSubviewToBack:backgroundImageView];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -77,7 +82,29 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void) setLabelsToTrackingState {
+    self.statusLabel.text = @"Tracking";
+    self.currentSpeed.text = @"waiting...";
+    self.distanceLabel.text = @"waiting...";
+}
+
 #pragma mark EBBackgroundWorkerDelegate
+- (void) backgroundWorkerStartedTracking {
+    NSLog(@" *** started tracking *** ");
+    //self.debugLabel.text = status;
+    // set button states
+    [self setLabelsToTrackingState];
+    NSLog(@"foo");
+}
+
+- (void) backgroundWorkerStoppedTracking {
+    NSLog(@" *** stopped tracking *** ");
+    //self.debugLabel.text = status;
+    // set button states
+    [self resetCounters];
+    NSLog(@"foo");
+}
+
 - (void) backgroundWorkerUpdatedStatus:(NSString *)status {
     NSLog(@"Invoked EBBackgroundWorkerDelegate with status %@ ", status);
     self.debugLabel.text = status;

@@ -14,6 +14,8 @@
 // what I'm going to say
 @protocol EBBackgroundWorkerDelegate <NSObject>
 
+- (void) backgroundWorkerStartedTracking;
+- (void) backgroundWorkerStoppedTracking;
 - (void) backgroundWorkerUpdatedStatus:(NSString *)status;
 - (void) backgroundWorkerUpdatedSpeed:(NSString *)speed;
 - (void) backgroundWorkerUpdatedDistance:(NSString *)distance;
@@ -25,19 +27,19 @@
 // who I'm going to talk to
 @property (nonatomic, assign) id<EBBackgroundWorkerDelegate> delegate;
 
-@property (nonatomic, strong) NSString *bikeUUID;
 @property (nonatomic, strong) NSString *bikeMovingUUID;
 @property (nonatomic, strong) NSNumber *bikeMajor;
 @property (nonatomic, strong) NSNumber *bikeMinor;
 
 @property (nonatomic, strong) ESTBeacon         *beacon;
 @property (nonatomic, strong) ESTBeaconManager  *beaconManager;
-@property (nonatomic, strong) ESTBeaconRegion   *bikeRegion;
 @property (nonatomic, strong) ESTBeaconRegion   *bikeMovingRegion;
 
 @property (nonatomic, strong) EBGPXTrack *track;
 
 @property BOOL isTracking;
+@property BOOL shouldStartTracking;
+
 
 + (EBBackgroundWorker *)sharedManager;
 

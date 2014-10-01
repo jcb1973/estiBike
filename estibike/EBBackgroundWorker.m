@@ -13,10 +13,11 @@
 #import "FRDStravaClientImports.h"
 
 #define DO_REAL_UPLOAD  NO
-#define EB_UUID         @"8195AC37-CD0F-4538-B49E-172DF15FF4F4"
-#define EB_MOTION_UUID  @"B9407F30-F5F8-466E-AFF9-25556B57FE6D"
-#define EB_MAJOR        34692
+
+#define EB_MOTION_UUID  @"B9407F30-F5F8-466E-AFF9-25556B57FE6A"
+#define EB_MAJOR        34696
 #define EB_MINOR        11408
+#define EB_MOVING_REGION @"estibikemoving"
 
 @implementation EBBackgroundWorker
 
@@ -34,7 +35,7 @@
     if (self = [super init]) {
         
         self.isTracking = NO;
-        self.bikeUUID = EB_UUID;
+        self.shouldStartTracking = NO;
         self.bikeMovingUUID = EB_MOTION_UUID;
         self.bikeMajor = [NSNumber numberWithInt:EB_MAJOR];
         self.bikeMinor = [NSNumber numberWithInt:EB_MINOR];
@@ -66,26 +67,13 @@
     [self logGPXToFile];
 }
 
-- (void) lookForBike {
-    
-    NSUUID *uuid = [[NSUUID alloc] initWithUUIDString:self.bikeUUID];
-    self.bikeRegion = [[ESTBeaconRegion alloc] initWithProximityUUID:uuid
-                                                                 major:[self.bikeMajor integerValue]
-                                                                 minor:[self.bikeMinor integerValue]
-                                                            identifier:@"estibike"];
-    
-    // start looking for bike
-    [self.beaconManager startMonitoringForRegion:self.bikeRegion];
-    [self.beaconManager requestStateForRegion:self.bikeRegion];
-}
-
 - (void) lookForBikeMovement {
     
     NSUUID *uuid = [[NSUUID alloc] initWithUUIDString:self.bikeMovingUUID];
     self.bikeMovingRegion = [[ESTBeaconRegion alloc] initWithProximityUUID:uuid
-                                                               major:[self.bikeMajor integerValue]
-                                                               minor:[self.bikeMinor integerValue]
-                                                          identifier:@"estibikemoving"];
+                                                                     major:[self.bikeMajor integerValue]
+                                                                     minor:[self.bikeMinor integerValue]
+                                                                identifier:EB_MOVING_REGION];
     
     // start looking for bike
     [self.beaconManager startMonitoringForRegion:self.bikeMovingRegion];
@@ -181,8 +169,13 @@
             break;
         case CLRegionStateInside:
             NSLog(@"inside");
+            if ([region.identifier isEqualToString:EB_MOVING_REGION]) {
+                [self.beaconManager startRangingBeaconsInRegion:region];
+                self.shouldStartTracking = YES;
+            }
             break;
         case CLRegionStateOutside:
+            self.shouldStartTracking = NO;
             NSLog(@"outside");
             break;
             
@@ -191,6 +184,30 @@
     }
 }
 
+// fired every second
+-(void) beaconManager:(ESTBeaconManager *)manager
+      didRangeBeacons:(NSArray *)beacons
+             inRegion:(ESTBeaconRegion *)region {
+    
+    if ([region.identifier isEqualToString:EB_MOVING_REGION]) {
+        // if we end up here the "bike" is moving.
+        ESTBeacon *beacon = [[ESTBeacon alloc] init];
+        beacon = [beacons lastObject];
+        if (beacon != nil) {
+            [self sendStatus:[NSString stringWithFormat:@"Bike in motion, major %@ minor %@", beacon.major, beacon.minor]];
+            // if not tracking then
+            if (!self.isTracking) {
+                self.isTracking = YES;
+                [self startTracking];
+                if([self.delegate respondsToSelector:@selector(backgroundWorkerStartedTracking)]) {
+                    [self.delegate backgroundWorkerStartedTracking];
+                }
+            }
+        } else {
+                [self sendStatus:@"not moving?"];
+        }
+    }
+}
 
 - (void)beaconManager:(ESTBeaconManager *)manager didEnterRegion:(ESTBeaconRegion *)region
 {
@@ -199,7 +216,13 @@
 
 - (void)beaconManager:(ESTBeaconManager *)manager didExitRegion:(ESTBeaconRegion *)region
 {
-    NSLog(@"\n\n ***** EXITED %@ REGION EVENT ***** \n\n", region.identifier);
+    NSLog(@"\n\n ***** EXITED %@ REGION EVENT stopping tracking ***** \n\n", region.identifier);
+    [self stopTracking];
+
+    if([self.delegate respondsToSelector:@selector(backgroundWorkerStoppedTracking)])
+    {
+        [self.delegate backgroundWorkerStoppedTracking];
+    }
 }
 
 #pragma mark PSLocationManagerDelegate
