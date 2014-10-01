@@ -12,6 +12,7 @@
 #import "EBGPXTrack.h"
 #import "FRDStravaClientImports.h"
 
+#define DO_REAL_UPLOAD  NO
 #define EB_UUID         @"8195AC37-CD0F-4538-B49E-172DF15FF4F4"
 #define EB_MOTION_UUID  @"B9407F30-F5F8-466E-AFF9-25556B57FE6D"
 #define EB_MAJOR        34692
@@ -19,7 +20,8 @@
 
 @implementation EBBackgroundWorker
 
-+ (id)sharedManager {
++ (EBBackgroundWorker *)sharedManager
+{
     static EBBackgroundWorker *ebBackgroundWorker = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -52,6 +54,8 @@
     self.isTracking = YES;
     [self setUpGPX];
     [[PSLocationManager sharedLocationManager] startLocationUpdates];
+    
+    [self sendStatus:@"Started tracking"];
 }
 
 - (void) stopTracking {
@@ -141,7 +145,8 @@
                                                 clientSecret:@"7bc2f3a1a2e58f492f339d8b9f4e5b745fab9ce2"];
     [[FRDStravaClient sharedInstance] setAccessToken:@"9727d907a025965a2d1bc526ace39ebe17623511"];
     
-    [[FRDStravaClient sharedInstance] uploadActivity:URL
+    if (DO_REAL_UPLOAD) {
+        [[FRDStravaClient sharedInstance] uploadActivity:URL
                                                 name:self.track.name
                                         activityType:kUnknownType
                                             dataType:kUploadDataTypeGPX
@@ -161,6 +166,7 @@
                                                                                     otherButtonTitles: nil];
                                                  [av show];
                                              }];
+    }
     NSLog(@"uploadGPX:-");
 }
 
@@ -239,6 +245,16 @@
     // location services is probably not enabled for the app
     //self.strengthLabel.text = NSLocalizedString(@"Unable to determine location", @"");
     NSLog(@"Unable to determine location");
+}
+
+#pragma mark - Utilities
+
+- (void)sendStatus:(NSString *)status
+{
+    if([self.delegate respondsToSelector:@selector(backgroundWorkerUpdatedStatus:)])
+    {
+        [self.delegate backgroundWorkerUpdatedStatus:status];
+    }
 }
 
 @end

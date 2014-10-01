@@ -9,7 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "PSLocationManager.h"
 #import <Foundation/Foundation.h>
-
-@interface EstibikeViewController : UIViewController 
+#import "EBBackgroundWorker.h"
+// I understand messages from ...
+@interface EstibikeViewController : UIViewController  <EBBackgroundWorkerDelegate>
 
 @end

@@ -11,7 +11,16 @@
 #import "EBGPXTrack.h"
 #import "PSLocationManager.h"
 
+// what I'm going to say
+@protocol EBBackgroundWorkerDelegate <NSObject>
+
+- (void) backgroundWorkerUpdatedStatus:(NSString *)status;
+
+@end
+
 @interface EBBackgroundWorker : NSObject <ESTBeaconManagerDelegate, PSLocationManagerDelegate>
+// who I'm going to talk to
+@property (nonatomic, assign) id<EBBackgroundWorkerDelegate> delegate;
 
 @property (nonatomic, strong) NSString *bikeUUID;
 @property (nonatomic, strong) NSString *bikeMovingUUID;
@@ -27,7 +36,7 @@
 
 @property BOOL isTracking;
 
-+ (id)sharedManager;
++ (EBBackgroundWorker *)sharedManager;
 
 - (void) lookForBike;
 - (void) lookForBikeMovement;

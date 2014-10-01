@@ -49,11 +49,13 @@
     NSLog(@"forceStartTracking:+");
     
     if (![[EBBackgroundWorker sharedManager] isTracking]) {
+        
         self.statusLabel.text = @"Tracking";
         self.currentSpeed.text = @"waiting...";
         self.distanceLabel.text = @"waiting...";
     
         [[EBBackgroundWorker sharedManager] startTracking];
+        
     } else {
         NSLog(@"was already tracking no need to restart");
     }
@@ -62,9 +64,12 @@
     
 }
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+
+    // I'm the person who is going to listen to you... Any time you call method from protocol, I'll deal with it.
+    [[EBBackgroundWorker sharedManager] setDelegate:self];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -72,14 +77,10 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+#pragma mark EBBackgroundWorkerDelegate
+- (void) backgroundWorkerUpdatedStatus:(NSString *)status {
+    NSLog(@"Invoked EBBackgroundWorkerDelegate with status %@ ", status);
+    self.debugLabel.text = status;
 }
-*/
 
 @end
