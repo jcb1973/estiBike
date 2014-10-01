@@ -10,6 +10,6 @@
 #import "PSLocationManager.h"
 #import <Foundation/Foundation.h>
 
-@interface EstibikeViewController : UIViewController <PSLocationManagerDelegate>
+@interface EstibikeViewController : UIViewController 
 
 @end
