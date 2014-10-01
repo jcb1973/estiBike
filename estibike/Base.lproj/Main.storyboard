@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
     <dependencies>
+        <deployment defaultVersion="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
@@ -65,10 +66,21 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Debug info" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="veD-Uh-hX3">
+                                <rect key="frame" x="16" y="137" width="317" height="303"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="303" id="3ls-vK-jhX"/>
+                                    <constraint firstAttribute="width" constant="317" id="Gl9-SU-QQO"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="bAe-Wb-BuY" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="20" id="4c7-2n-eZh"/>
+                            <constraint firstItem="veD-Uh-hX3" firstAttribute="top" secondItem="Cq5-Yw-Awa" secondAttribute="bottom" constant="41" id="6nN-50-Ka5"/>
                             <constraint firstItem="bAe-Wb-BuY" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="20" id="KVO-Bx-5YV"/>
                             <constraint firstItem="SkD-gO-rPU" firstAttribute="leading" secondItem="bAe-Wb-BuY" secondAttribute="trailing" constant="64" id="VUa-Tg-QOa"/>
                             <constraint firstItem="SkD-gO-rPU" firstAttribute="top" secondItem="kh9-bI-dsS" secondAttribute="topMargin" constant="12" id="WTI-Jl-Qk0"/>
@@ -76,12 +88,14 @@
                             <constraint firstItem="Cq5-Yw-Awa" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" id="lVs-Qf-HMk"/>
                             <constraint firstItem="Hbl-GB-3cu" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" id="mj2-lP-NoB"/>
                             <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="r1h-Zf-z4w" secondAttribute="bottom" constant="20" id="oss-Tc-zK7"/>
+                            <constraint firstItem="veD-Uh-hX3" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" id="pXb-6l-fTA"/>
                             <constraint firstItem="Cq5-Yw-Awa" firstAttribute="top" secondItem="Hbl-GB-3cu" secondAttribute="bottom" constant="8" id="qd2-bU-wj9"/>
                             <constraint firstItem="r1h-Zf-z4w" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" id="zQ1-Ng-XvG"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="currentSpeed" destination="Cq5-Yw-Awa" id="okM-NC-Z3p"/>
+                        <outlet property="debugLabel" destination="veD-Uh-hX3" id="SYU-dU-EjI"/>
                         <outlet property="distanceLabel" destination="Hbl-GB-3cu" id="aUS-zS-j9d"/>
                         <outlet property="statusLabel" destination="SkD-gO-rPU" id="3kW-1x-17V"/>
                     </connections>

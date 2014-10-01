@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import <CoreLocation/CoreLocation.h>
+#import "FRDStravaClientImports.h"
 
 @interface AppDelegate ()
 
@@ -19,7 +20,6 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
    // NSLog(@"got here");
-    
     return YES;
 }
 
