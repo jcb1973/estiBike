@@ -211,7 +211,11 @@
     [self.track addTrackpoint:point];
     if ([[PSLocationManager sharedLocationManager] currentSpeed] > 0) {
         double kmPerHour = [[PSLocationManager sharedLocationManager] currentSpeed] * 60 * 60 / 1000 ;
-        //self.currentSpeed.text = [NSString stringWithFormat:@"%.2f km/h", kmPerHour];
+
+        if([self.delegate respondsToSelector:@selector(backgroundWorkerUpdatedSpeed:)])
+        {
+            [self.delegate backgroundWorkerUpdatedSpeed:[NSString stringWithFormat:@"%.2f km/h", kmPerHour]];
+        }
         NSLog(@"%.2f km/h", kmPerHour);
     }
     
@@ -238,6 +242,11 @@
 
 - (void)locationManager:(PSLocationManager *)locationManager distanceUpdated:(CLLocationDistance)distance {
     //self.distanceLabel.text = [NSString stringWithFormat:@"%.2f %@", distance, NSLocalizedString(@"meters", @"")];
+    
+    if([self.delegate respondsToSelector:@selector(backgroundWorkerUpdatedDistance:)])
+    {
+        [self.delegate backgroundWorkerUpdatedDistance:[NSString stringWithFormat:@"%.2f metres", distance]];
+    }
     NSLog(@"%.2f meters", distance);
 }
 

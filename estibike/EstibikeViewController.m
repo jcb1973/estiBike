@@ -82,5 +82,13 @@
     NSLog(@"Invoked EBBackgroundWorkerDelegate with status %@ ", status);
     self.debugLabel.text = status;
 }
+- (void) backgroundWorkerUpdatedSpeed:(NSString *)speed {
+    NSLog(@"Invoked EBBackgroundWorkerDelegate with speed %@ ", speed);
+    self.currentSpeed.text = speed;
+}
+- (void) backgroundWorkerUpdatedDistance:(NSString *)distance {
+    NSLog(@"Invoked EBBackgroundWorkerDelegate with distance %@ ", distance);
+    self.distanceLabel.text = distance;
+}
 
 @end

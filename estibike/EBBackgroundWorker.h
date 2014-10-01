@@ -15,10 +15,13 @@
 @protocol EBBackgroundWorkerDelegate <NSObject>
 
 - (void) backgroundWorkerUpdatedStatus:(NSString *)status;
+- (void) backgroundWorkerUpdatedSpeed:(NSString *)speed;
+- (void) backgroundWorkerUpdatedDistance:(NSString *)distance;
 
 @end
 
 @interface EBBackgroundWorker : NSObject <ESTBeaconManagerDelegate, PSLocationManagerDelegate>
+
 // who I'm going to talk to
 @property (nonatomic, assign) id<EBBackgroundWorkerDelegate> delegate;
 
