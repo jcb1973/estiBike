@@ -1,0 +1,6 @@
+GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
+HEADER_SEARCH_PATHS = "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/AFNetworking" "${PODS_ROOT}/Headers/Public/EstimoteSDK" "${PODS_ROOT}/Headers/Public/FRDStravaClient" "${PODS_ROOT}/Headers/Public/Mantle" "${PODS_ROOT}/Headers/EstimoteSDK"
+LIBRARY_SEARCH_PATHS = "$(PODS_ROOT)/EstimoteSDK" "$(PODS_ROOT)/EstimoteSDK/EstimoteSDK"
+OTHER_CFLAGS = $(inherited) -isystem "${PODS_ROOT}/Headers/Public" -isystem "${PODS_ROOT}/Headers/Public/AFNetworking" -isystem "${PODS_ROOT}/Headers/Public/EstimoteSDK" -isystem "${PODS_ROOT}/Headers/Public/FRDStravaClient" -isystem "${PODS_ROOT}/Headers/Public/Mantle"
+OTHER_LDFLAGS = -ObjC -l"EstimoteSDK" -l"Pods-AFNetworking" -l"Pods-EstimoteSDK" -l"Pods-FRDStravaClient" -l"Pods-Mantle" -framework "CoreGraphics" -framework "CoreLocation" -framework "Foundation" -framework "MobileCoreServices" -framework "Security" -framework "SystemConfiguration" -framework "UIKit"
+PODS_ROOT = ${SRCROOT}/Pods

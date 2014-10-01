@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import <CoreLocation/CoreLocation.h>
 #import "FRDStravaClientImports.h"
+#import "EBBackgroundWorker.h"
 
 @interface AppDelegate ()
 
@@ -19,7 +20,10 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-   // NSLog(@"got here");
+    NSLog(@"didFinishLaunchingWithOptions+");
+    EBBackgroundWorker *backgroundWorker = [EBBackgroundWorker sharedManager];
+    [backgroundWorker lookForBikeMovement];
+    
     return YES;
 }
 

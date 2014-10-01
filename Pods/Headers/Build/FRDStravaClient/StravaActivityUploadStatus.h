@@ -1,0 +1,1 @@
+../../../FRDStravaClient/Classes/StravaActivityUploadStatus.h

@@ -20,6 +20,7 @@ PODS:
   - AFNetworking/UIKit (2.4.1):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
+  - EstimoteSDK (2.1.5)
   - FRDStravaClient (1.0.2):
     - AFNetworking (~> 2.0)
     - Mantle (= 1.5)
@@ -28,11 +29,13 @@ PODS:
   - Mantle/extobjc (1.5)
 
 DEPENDENCIES:
+  - EstimoteSDK
   - FRDStravaClient (~> 1.0.2)
 
 SPEC CHECKSUMS:
   AFNetworking: 0aabc6fae66d6e5d039eeb21c315843c7aae51ab
+  EstimoteSDK: 1a8184137ab16615b982efd0804aa711a0262ce7
   FRDStravaClient: 8530f9de0b5189b77ed39ca876d87f4f28d71a6e
   Mantle: c67a7e45e14196ed42b2a7cbb98ff6a9920e6b92
 
-COCOAPODS: 0.33.1
+COCOAPODS: 0.34.1

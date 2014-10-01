@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "6DD0E9C9E3C24F729557E6B2"
+               BlueprintIdentifier = "8F27A1F8DDB637D9F0DDC04D"
                BuildableName = "libPods-FRDStravaClient.a"
                BlueprintName = "Pods-FRDStravaClient"
                ReferencedContainer = "container:Pods.xcodeproj">

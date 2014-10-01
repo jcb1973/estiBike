@@ -148,6 +148,7 @@
 -(void)locationManager:(PSLocationManager *)locationManager waypoint:(CLLocation *)waypoint calculatedSpeed:(double)calculatedSpeed {
     
     NSLog(@"called waypoint+");
+    
     EBGPXTrackpoint *point = [[EBGPXTrackpoint alloc] initWithLongitude:[NSNumber numberWithDouble:waypoint.coordinate.longitude] latitude:[NSNumber numberWithDouble:waypoint.coordinate.latitude]];
     [self.track addTrackpoint:point];
     if ([[PSLocationManager sharedLocationManager] currentSpeed] > 0) {
