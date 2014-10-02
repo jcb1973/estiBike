@@ -18,6 +18,7 @@
 #define EB_MINOR        11408
 #define EB_MOVING_REGION @"estibikemoving"
 #define EB_STATIC_REGION @"estibike"
+#define EB_BIKE_MIN_SPEED 10
 
 @implementation EBBackgroundWorker
 
@@ -30,6 +31,8 @@
     return ebBackgroundWorker;
 }
 
+int firstRecordedRSSI = -1;
+
 - (id)init {
     if (self = [super init]) {
         NSLog(@"called init");
@@ -40,19 +43,20 @@
         self.bikeMinor = [NSNumber numberWithInt:EB_MINOR];
         
         // setup Estimote beacon managers - one for static one for moving
+        // TO DO FIX use one
         self.beaconManager = [[ESTBeaconManager alloc] init];
         self.beaconManager.delegate = self;
         self.staticBeaconManager = [[ESTBeaconManager alloc] init];
         self.staticBeaconManager.delegate = self;
         
         
-        NSUUID *muuid = [[NSUUID alloc] initWithUUIDString:self.bikeMovingUUID];
-        self.bikeMovingRegion = [[ESTBeaconRegion alloc] initWithProximityUUID:muuid
+        NSUUID *motionUUID = [[NSUUID alloc] initWithUUIDString:self.bikeMovingUUID];
+        self.bikeMovingRegion = [[ESTBeaconRegion alloc] initWithProximityUUID:motionUUID
                                                                          major:[self.bikeMajor integerValue]
                                                                          minor:[self.bikeMinor integerValue]
                                                                     identifier:EB_MOVING_REGION];
-        NSUUID *uuid = [[NSUUID alloc] initWithUUIDString:self.bikeStaticUUID];
-        self.bikeStaticRegion = [[ESTBeaconRegion alloc] initWithProximityUUID:uuid
+        NSUUID *staticUUID = [[NSUUID alloc] initWithUUIDString:self.bikeStaticUUID];
+        self.bikeStaticRegion = [[ESTBeaconRegion alloc] initWithProximityUUID:staticUUID
                                                                          major:55129
                                                                          minor:48863
                                                                     identifier:EB_STATIC_REGION];
@@ -81,8 +85,8 @@
     NSLog(@"Stopping PSLocationManager services, stopping 2x beaconmanagers");
     [[PSLocationManager sharedLocationManager] stopLocationUpdates];
     [[PSLocationManager sharedLocationManager] resetLocationUpdates];
-    [self.staticBeaconManager stopRangingBeaconsInRegion:self.bikeStaticRegion];
-    [self.beaconManager stopRangingBeaconsInRegion:self.bikeMovingRegion];
+    //[self.staticBeaconManager stopRangingBeaconsInRegion:self.bikeStaticRegion];
+    //[self.beaconManager stopRangingBeaconsInRegion:self.bikeMovingRegion];
     [self sendDebug:@"Stopped tracking"];
 }
 
@@ -90,6 +94,7 @@
     
     // start looking for moving bike
     [self.beaconManager startMonitoringForRegion:self.bikeMovingRegion];
+    [self.beaconManager startMonitoringForRegion:self.bikeStaticRegion];
     //[self.beaconManager requestStateForRegion:self.bikeMovingRegion];
 }
 
@@ -118,7 +123,7 @@
 #pragma mark ESTBeaconManagerDelegate
 - (void)beaconManager:(ESTBeaconManager *)manager didDetermineState:(CLRegionState)state forRegion:(ESTBeaconRegion *)region
 {
-    NSLog(@"\n ***** DETERMINED STATE %d FOR REGION %@ with current tracking state %u ***** \n", state, region.identifier, self.trackingState);
+    NSLog(@"\n ***** determined state %d FOR REGION %@ with current tracking state %u ***** \n", state, region.identifier, self.trackingState);
     
     switch (state) {
         case CLRegionStateUnknown:
@@ -133,14 +138,6 @@
                 
                 if (self.trackingState == EBWaiting) {
                     self.trackingState = EBReadyToTrack;
-                
-                    if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateBackground) {
-                        [[UIApplication sharedApplication] cancelAllLocalNotifications];
-                        UILocalNotification *notification = [[UILocalNotification alloc] init];
-                        notification.alertBody = @"Hey! Let's #estibike!";
-                        notification.soundName = UILocalNotificationDefaultSoundName;
-                        [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
-                    }
                 }
             }
             break;
@@ -174,7 +171,7 @@
         ESTBeacon *beacon = [[ESTBeacon alloc] init];
         beacon = [beacons lastObject];
         if (beacon != nil) {
-            [self sendDebug:[NSString stringWithFormat:@"Bike in motion, major %@ minor %@", beacon.major, beacon.minor]];
+            [self sendDebug:@"Bike in motion"];
             // if we've paused, restart tracking tracking then
             if (self.trackingState == EBReadyToFinalise || self.trackingState == EBCouldFinish) {
                 self.trackingState = EBTracking;
@@ -198,9 +195,23 @@
         ESTBeacon *beacon = [[ESTBeacon alloc] init];
         beacon = [beacons lastObject];
         if (beacon != nil) {
-            NSLog(@"beacon not nil proximity is %d", beacon.proximity);
-            if (beacon.proximity != CLProximityImmediate) {
-                self.trackingState = EBReadyToFinalise;
+            NSLog(@"beacon proximity %d current speed is %.2f rssi %d", beacon.proximity, [[PSLocationManager sharedLocationManager] currentSpeed], beacon.rssi);
+            
+            //
+            // Here's where we figure out we can finish.
+            //
+            if (((beacon.proximity >= CLProximityNear && [[PSLocationManager sharedLocationManager] currentSpeed] <= EB_BIKE_MIN_SPEED))) {
+                //self.trackingState = EBReadyToFinalise;
+                NSLog(@"beacon proximity %d current speed is %.2f lastRSSI %d currentRSSI %d", beacon.proximity, [[PSLocationManager sharedLocationManager] currentSpeed], firstRecordedRSSI, beacon.rssi);
+                // see if the signal strength is decreasing
+                if (firstRecordedRSSI == -1) {
+                    firstRecordedRSSI = abs(beacon.rssi);
+                } else {
+                    int currentRSSI = abs(beacon.rssi);
+                    if ((currentRSSI - firstRecordedRSSI >= 5) && firstRecordedRSSI != -1)  {
+                       self.trackingState = EBReadyToFinalise;
+                    }
+                }
             }
         }
     }

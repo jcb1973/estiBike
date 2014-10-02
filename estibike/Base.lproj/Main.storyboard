@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
     <dependencies>
+        <deployment defaultVersion="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
@@ -47,17 +48,8 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Not tracking" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SkD-gO-rPU">
-                                <rect key="frame" x="198" y="12" width="135" height="21"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="135" id="yyt-Jj-hci"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Debug info" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="veD-Uh-hX3">
-                                <rect key="frame" x="16" y="137" width="317" height="303"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Debug info" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="veD-Uh-hX3">
+                                <rect key="frame" x="16" y="310" width="317" height="111"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="303" id="5xy-sW-Mj6"/>
                                     <constraint firstAttribute="width" constant="317" id="yEa-Vc-IsK"/>
@@ -86,13 +78,11 @@
                             <constraint firstAttribute="bottom" secondItem="r1h-Zf-z4w" secondAttribute="bottom" constant="20" symbolic="YES" id="8Jq-yB-xyJ"/>
                             <constraint firstItem="Cq5-Yw-Awa" firstAttribute="top" secondItem="Hbl-GB-3cu" secondAttribute="bottom" constant="8" symbolic="YES" id="C3O-gp-cmo"/>
                             <constraint firstItem="veD-Uh-hX3" firstAttribute="leading" secondItem="Cq5-Yw-Awa" secondAttribute="leading" id="KBc-fq-e2i"/>
-                            <constraint firstItem="SkD-gO-rPU" firstAttribute="trailing" secondItem="veD-Uh-hX3" secondAttribute="trailing" id="Q4m-b7-dwx"/>
                             <constraint firstItem="r1h-Zf-z4w" firstAttribute="baseline" secondItem="bAe-Wb-BuY" secondAttribute="baseline" id="RHy-bW-uEX"/>
                             <constraint firstItem="Hbl-GB-3cu" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" id="STo-Z9-qZ0"/>
                             <constraint firstItem="Hbl-GB-3cu" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="26" id="XPg-8R-5EK"/>
                             <constraint firstItem="Hbl-GB-3cu" firstAttribute="leading" secondItem="Cq5-Yw-Awa" secondAttribute="leading" id="aVp-Pm-3Nd"/>
                             <constraint firstItem="bAe-Wb-BuY" firstAttribute="leading" secondItem="r1h-Zf-z4w" secondAttribute="trailing" constant="39" id="cZq-Ic-Dqq"/>
-                            <constraint firstItem="SkD-gO-rPU" firstAttribute="top" secondItem="kh9-bI-dsS" secondAttribute="topMargin" constant="12" id="hZ7-C3-xb7"/>
                             <constraint firstItem="veD-Uh-hX3" firstAttribute="leading" secondItem="r1h-Zf-z4w" secondAttribute="leading" id="ttg-ep-h7D"/>
                             <constraint firstItem="veD-Uh-hX3" firstAttribute="top" secondItem="Cq5-Yw-Awa" secondAttribute="bottom" constant="41" id="uok-cp-0MR"/>
                         </constraints>
@@ -102,7 +92,6 @@
                         <outlet property="currentSpeed" destination="Cq5-Yw-Awa" id="okM-NC-Z3p"/>
                         <outlet property="debugLabel" destination="veD-Uh-hX3" id="SYU-dU-EjI"/>
                         <outlet property="distanceLabel" destination="Hbl-GB-3cu" id="aUS-zS-j9d"/>
-                        <outlet property="statusLabel" destination="SkD-gO-rPU" id="3kW-1x-17V"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>

@@ -14,7 +14,6 @@
 
 @property (nonatomic, weak) IBOutlet UILabel *distanceLabel;
 @property (nonatomic, weak) IBOutlet UILabel *currentSpeed;
-@property (nonatomic, weak) IBOutlet UILabel *statusLabel;
 @property (nonatomic, weak) IBOutlet UILabel *debugLabel;
 @property (nonatomic, weak) IBOutlet UIButton *controlButton;
 @property EBTrackingState trackingState;
@@ -80,6 +79,7 @@
     [self.view addSubview:backgroundImageView]; //in your case, again, use _blurView
     //just in case
     [self.view sendSubviewToBack:backgroundImageView];
+    [self setDebugText:@"Waiting"];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -89,39 +89,44 @@
 
 - (void) resetCounters {
     NSLog(@"resetLabels");
-    self.currentSpeed.text = @"Current speed";
-    self.distanceLabel.text = @"Distance travelled";
-    self.statusLabel.text = @"Not tracking";
-    self.debugLabel.text = @"Debug info";
+    //self.currentSpeed.text = @"Current speed";
+    //self.distanceLabel.text = @"Distance travelled";
+    [self setDebugText:@"Debug info"];
     self.controlButton.hidden = YES;
 }
 
 - (void) setLabelsToReadyState {
+    
     NSLog(@"setlabels to ready");
-    self.statusLabel.text = @"Ready";
-    self.currentSpeed.text = @"waiting...";
-    self.distanceLabel.text = @"waiting...";
+    [self setDebugText:@"Ready"];
     self.controlButton.hidden = NO;
     self.controlButton.backgroundColor = [UIColor colorWithRed:(0/255.0) green:(128.0/255.0) blue:(64.0/255.0) alpha:1.0];
     [self.controlButton setTitle:@"Start" forState:UIControlStateNormal];
+    
+    if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateBackground) {
+        [[UIApplication sharedApplication] cancelAllLocalNotifications];
+        UILocalNotification *notification = [[UILocalNotification alloc] init];
+        notification.alertBody = @"Hey! Let's #estibike!";
+        notification.soundName = UILocalNotificationDefaultSoundName;
+        [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
+    }
 }
 
 - (void) setLabelsToTrackingState {
     NSLog(@"setlabels to tracking");
-    self.statusLabel.text = @"Tracking";
-    self.currentSpeed.text = @"waiting...";
-    self.distanceLabel.text = @"waiting...";
+    [self setDebugText:@"Tracking"];
     self.controlButton.hidden = YES;
 }
 
 - (void) setLabelsToFinaliseState {
     NSLog(@"setlabels to finalise");
-    self.statusLabel.text = @"Waiting to finalise";
-    self.currentSpeed.text = @"average speed";
+    //self.statusLabel.text = @"Waiting to finalise";
+    //self.currentSpeed.text = @"average speed";
     self.distanceLabel.text = [NSString stringWithFormat:@"%.2f m", [[PSLocationManager sharedLocationManager] totalDistance]];
     self.controlButton.hidden = NO;
     self.controlButton.backgroundColor = [UIColor redColor];
     [self.controlButton setTitle:@"Finish" forState:UIControlStateNormal];
+    [self setDebugText:@"Ready to finish"];
 }
 
 #pragma mark EBBackgroundWorkerDelegate
@@ -157,8 +162,15 @@
     }
 }
 
+- (void) setDebugText:(NSString *)txt {
+    NSMutableString* s = [NSMutableString string];
+    [s appendString:txt];
+    [s appendString:[NSString stringWithFormat:@"\nTracking state %d\n", self.trackingState]];
+    self.debugLabel.text = [NSString stringWithString:s];
+}
+
 - (void) backgroundWorkerSentDebug:(NSString *)msg {
-    self.debugLabel.text = msg;
+    [self setDebugText:msg];
 }
 - (void) backgroundWorkerUpdatedSpeed:(NSString *)speed {
     self.currentSpeed.text = speed;
