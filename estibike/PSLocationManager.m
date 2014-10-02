@@ -265,7 +265,6 @@ static const CGFloat kSpeedNotSet = -1.0;
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
     
-    NSLog(@"didUpdateToLocation+");
     // since the oldLocation might be from some previous use of core location, we need to make sure we're getting data from this run
     if (oldLocation == nil) return;
     BOOL isStaleLocation = ([oldLocation.timestamp compare:self.startTimestamp] == NSOrderedAscending);

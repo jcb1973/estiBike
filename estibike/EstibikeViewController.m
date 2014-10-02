@@ -16,48 +16,53 @@
 @property (nonatomic, weak) IBOutlet UILabel *currentSpeed;
 @property (nonatomic, weak) IBOutlet UILabel *statusLabel;
 @property (nonatomic, weak) IBOutlet UILabel *debugLabel;
+@property (nonatomic, weak) IBOutlet UIButton *controlButton;
+@property EBTrackingState trackingState;
 @property (nonatomic, strong) EBGPXTrack *track;
 
 @end
 
 @implementation EstibikeViewController
 
-- (void) resetCounters
-{
-    self.currentSpeed.text = @"Current speed";
-    self.distanceLabel.text = @"Distance travelled";
-    self.statusLabel.text = @"Not tracking";
-    self.debugLabel.text = @"Debug info";
-}
-- (IBAction) forceStopTracking:(id)sender
-{
+
+- (IBAction) forceStopTracking:(id)sender {
     NSLog(@"forceStopTracking:+");
     
     [self resetCounters];
     
-    if ([[EBBackgroundWorker sharedManager] isTracking]) {
+    if ([[EBBackgroundWorker sharedManager] trackingState] == EBTracking) {
+    
         [[EBBackgroundWorker sharedManager] stopTracking];
+        [[EBBackgroundWorker sharedManager] finish];
     } else {
         NSLog(@"wasn't tracking no need to stop");
     }
-    
-    NSLog(@"forceStopTracking:-");    
 }
 
-- (IBAction) forceStartTracking:(id)sender
-{
-    NSLog(@"forceStartTracking:+");
+- (IBAction) handleUserInteraction:(id)sender {
     
-    if (![[EBBackgroundWorker sharedManager] isTracking]) {
-        [self setLabelsToTrackingState];
-        [[EBBackgroundWorker sharedManager] startTracking];
-        
-    } else {
-        NSLog(@"was already tracking no need to restart");
+    UIButton *btn = (UIButton *)sender;
+    NSString *action = [[btn titleLabel] text];
+    
+    if ([action isEqualToString:@"Start"]) {
+        if ([[EBBackgroundWorker sharedManager] trackingState] != EBTracking) {
+            [self setLabelsToTrackingState];
+            [[EBBackgroundWorker sharedManager] startTracking];
+            
+        } else {
+            NSLog(@"was already tracking no need to restart");
+        }
+    } else if ([action isEqualToString:@"Finish"]) {
+        if ([[EBBackgroundWorker sharedManager] trackingState] == EBReadyToFinalise) {
+            
+            [[EBBackgroundWorker sharedManager] stopTracking];
+            [[EBBackgroundWorker sharedManager] finish];
+            [self resetCounters];
+            
+        } else {
+            NSLog(@"was not tracking no need to stop");
+        }
     }
-    
-    NSLog(@"forceStartTracking:-");
-    
 }
 
 - (void)viewDidLoad
@@ -69,10 +74,10 @@
     //Create UIImageView
     UIImageView *backgroundImageView = [[UIImageView alloc] initWithFrame:self.view.frame]; //or in your case you should use your _blurView
     backgroundImageView.image = [UIImage imageNamed:@"splash_screen.png"];
+    self.controlButton.hidden = YES;
     
     //set it as a subview
     [self.view addSubview:backgroundImageView]; //in your case, again, use _blurView
-    
     //just in case
     [self.view sendSubviewToBack:backgroundImageView];
 }
@@ -82,39 +87,83 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void) resetCounters {
+    NSLog(@"resetLabels");
+    self.currentSpeed.text = @"Current speed";
+    self.distanceLabel.text = @"Distance travelled";
+    self.statusLabel.text = @"Not tracking";
+    self.debugLabel.text = @"Debug info";
+    self.controlButton.hidden = YES;
+}
+
+- (void) setLabelsToReadyState {
+    NSLog(@"setlabels to ready");
+    self.statusLabel.text = @"Ready";
+    self.currentSpeed.text = @"waiting...";
+    self.distanceLabel.text = @"waiting...";
+    self.controlButton.hidden = NO;
+    self.controlButton.backgroundColor = [UIColor colorWithRed:(0/255.0) green:(128.0/255.0) blue:(64.0/255.0) alpha:1.0];
+    [self.controlButton setTitle:@"Start" forState:UIControlStateNormal];
+}
+
 - (void) setLabelsToTrackingState {
+    NSLog(@"setlabels to tracking");
     self.statusLabel.text = @"Tracking";
     self.currentSpeed.text = @"waiting...";
     self.distanceLabel.text = @"waiting...";
+    self.controlButton.hidden = YES;
+}
+
+- (void) setLabelsToFinaliseState {
+    NSLog(@"setlabels to finalise");
+    self.statusLabel.text = @"Waiting to finalise";
+    self.currentSpeed.text = @"average speed";
+    self.distanceLabel.text = [NSString stringWithFormat:@"%.2f m", [[PSLocationManager sharedLocationManager] totalDistance]];
+    self.controlButton.hidden = NO;
+    self.controlButton.backgroundColor = [UIColor redColor];
+    [self.controlButton setTitle:@"Finish" forState:UIControlStateNormal];
 }
 
 #pragma mark EBBackgroundWorkerDelegate
-- (void) backgroundWorkerStartedTracking {
-    NSLog(@" *** started tracking *** ");
-    //self.debugLabel.text = status;
-    // set button states
-    [self setLabelsToTrackingState];
-    NSLog(@"foo");
+- (void) backgroundWorkerSendStateChange:(EBTrackingState)state {
+   
+    EBTrackingState previousState = self.trackingState;
+    self.trackingState = state;
+    
+    if (state != previousState) {
+        
+        NSLog(@" *** state change sent by background worker old state %u new state %u *** ", previousState, state);
+        
+        switch (state) {
+            case EBWaiting:
+                //no buttons
+                self.controlButton.hidden = YES;
+                break;
+            case EBReadyToTrack:
+                [self setLabelsToReadyState];
+                break;
+            case EBTracking:
+                [self setLabelsToTrackingState];
+                break;
+            case EBCouldFinish:
+                // don't do anything?
+                break;
+            case EBReadyToFinalise:
+                [self setLabelsToFinaliseState];
+                break;
+            default:
+                break;
+        }
+    }
 }
 
-- (void) backgroundWorkerStoppedTracking {
-    NSLog(@" *** stopped tracking *** ");
-    //self.debugLabel.text = status;
-    // set button states
-    [self resetCounters];
-    NSLog(@"foo");
-}
-
-- (void) backgroundWorkerUpdatedStatus:(NSString *)status {
-    NSLog(@"Invoked EBBackgroundWorkerDelegate with status %@ ", status);
-    self.debugLabel.text = status;
+- (void) backgroundWorkerSentDebug:(NSString *)msg {
+    self.debugLabel.text = msg;
 }
 - (void) backgroundWorkerUpdatedSpeed:(NSString *)speed {
-    NSLog(@"Invoked EBBackgroundWorkerDelegate with speed %@ ", speed);
     self.currentSpeed.text = speed;
 }
 - (void) backgroundWorkerUpdatedDistance:(NSString *)distance {
-    NSLog(@"Invoked EBBackgroundWorkerDelegate with distance %@ ", distance);
     self.distanceLabel.text = distance;
 }
 
