@@ -16,6 +16,7 @@
 @property (nonatomic, weak) IBOutlet UILabel *waitingLabel;
 @property (nonatomic, weak) IBOutlet UIButton *controlButton;
 @property EBTrackingState trackingState;
+@property BOOL bikeInMotion;
 @property (nonatomic, strong) EBGPXTrack *track;
 @property UIImageView *backgroundImageView;
 
@@ -154,19 +155,21 @@
 - (void) setLabelsToWaitingState {
     
     NSLog(@"setlabels to waiting");
-    //self.statusLabel.text = @"Waiting to finalise";
-    //self.currentSpeed.text = @"average speed";
-    //self.distanceLabel.text = [NSString stringWithFormat:@"%.2f m", [[PSLocationManager sharedLocationManager] totalDistance]];
     self.controlButton.hidden = YES;
-    //self.controlButton.backgroundColor = [UIColor redColor];
-    //[self.controlButton setTitle:@"Finish" forState:UIControlStateNormal];
     [self setDebugText:@"Waiting"];
     self.waitingLabel.text = @"#estibike waiting...";
     self.backgroundImageView.image = [UIImage imageNamed:@"splash_screen.png"];
 }
 
-
 #pragma mark EBBackgroundWorkerDelegate
+- (void) backgroundWorkerSendBikeMotionFlag:(BOOL)isInMotion {
+    
+    if (isInMotion && (self.trackingState == EBWaiting || self.trackingState == EBReadyToTrack)) {
+        [self animateBackgroundWithSpeed:2];
+    } else if (!isInMotion && ((self.trackingState == EBWaiting || self.trackingState == EBReadyToTrack))) {
+        self.backgroundImageView.image = [UIImage imageNamed:@"splash_screen.png"];
+    }
+}
 - (void) backgroundWorkerSendStateChange:(EBTrackingState)state {
    
     EBTrackingState previousState = self.trackingState;
@@ -210,8 +213,23 @@
 - (void) backgroundWorkerSentDebug:(NSString *)msg {
     [self setDebugText:msg];
 }
-- (void) backgroundWorkerUpdatedSpeed:(NSString *)speed {
+
+- (void) animateBackgroundWithSpeed:(double)speed {
+    self.backgroundImageView.image = [UIImage animatedImageNamed:@"splash_screen" duration:speed];
+    //set it as a subview
+    [self.view addSubview:self.backgroundImageView]; //in your case, again, use _blurView
+    //just in case
+    [self.view sendSubviewToBack:self.backgroundImageView];
+}
+
+- (void) backgroundWorkerUpdatedSpeed:(double)speed {
     //self.currentSpeed.text = speed;
+    // the bigger this is, the faster we want the animation to be
+    double newSpeed = 1 - (1/(speed * speed));
+    NSLog(@"speed is %.2f", speed);
+    if (self.trackingState == EBTracking) {
+        [self animateBackgroundWithSpeed:newSpeed];
+    }
 }
 - (void) backgroundWorkerUpdatedDistance:(NSString *)distance {
     //self.distanceLabel.text = distance;

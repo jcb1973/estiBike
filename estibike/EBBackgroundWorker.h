@@ -23,7 +23,9 @@ typedef enum {
 @protocol EBBackgroundWorkerDelegate <NSObject>
 
 - (void) backgroundWorkerSentDebug:(NSString *)msg;
+- (void) backgroundWorkerUpdatedSpeed:(double)speed;
 - (void) backgroundWorkerSendStateChange: (EBTrackingState) state;
+- (void) backgroundWorkerSendBikeMotionFlag:(BOOL)isInMotion;
 
 @end
 

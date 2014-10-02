@@ -168,6 +168,9 @@ int firstRecordedRSSI = -1;
         beacon = [beacons lastObject];
         if (beacon != nil) {
             [self sendDebug:@"Bike in motion"];
+            if ([self.delegate respondsToSelector:@selector(backgroundWorkerSendBikeMotionFlag:)]) {
+                [self.delegate backgroundWorkerSendBikeMotionFlag:YES];
+            }
             // if we've paused, restart tracking tracking then
             if (self.trackingState == EBReadyToFinalise || self.trackingState == EBCouldFinish) {
                 self.trackingState = EBTracking;
@@ -179,6 +182,9 @@ int firstRecordedRSSI = -1;
             }
         } else {
             [self sendDebug:[NSString stringWithFormat:@"Not moving - tracking state is %u", self.trackingState]];
+            if ([self.delegate respondsToSelector:@selector(backgroundWorkerSendBikeMotionFlag:)]) {
+                [self.delegate backgroundWorkerSendBikeMotionFlag:NO];
+            }
             // enter EBCouldFinish state if we are tracking, we want to catch the end of ride asap
             if (self.trackingState == EBTracking) {
                 [self sendDebug:@"tracking, but not moving - could finish?"];
@@ -284,11 +290,11 @@ int firstRecordedRSSI = -1;
         EBGPXTrackpoint *point = [[EBGPXTrackpoint alloc] initWithLongitude:[NSNumber numberWithDouble:waypoint.coordinate.longitude] latitude:[NSNumber numberWithDouble:waypoint.coordinate.latitude]];
         [self.track addTrackpoint:point];
         if ([[PSLocationManager sharedLocationManager] currentSpeed] > 0) {
-            //double kmPerHour = [[PSLocationManager sharedLocationManager] currentSpeed] * 60 * 60 / 1000 ;
+           // double kmPerHour = [[PSLocationManager sharedLocationManager] currentSpeed] * 60 * 60 / 1000 ;
 
-//            if([self.delegate respondsToSelector:@selector(backgroundWorkerUpdatedSpeed:)]) {
-//                [self.delegate backgroundWorkerUpdatedSpeed:[NSString stringWithFormat:@"%.2f km/h", kmPerHour]];
-//            }
+            if([self.delegate respondsToSelector:@selector(backgroundWorkerUpdatedSpeed:)]) {
+                [self.delegate backgroundWorkerUpdatedSpeed:[[PSLocationManager sharedLocationManager] currentSpeed]];
+            }
         }
     }
 }
