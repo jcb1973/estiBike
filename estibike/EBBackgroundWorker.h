@@ -23,8 +23,6 @@ typedef enum {
 @protocol EBBackgroundWorkerDelegate <NSObject>
 
 - (void) backgroundWorkerSentDebug:(NSString *)msg;
-- (void) backgroundWorkerUpdatedSpeed:(NSString *)speed;
-- (void) backgroundWorkerUpdatedDistance:(NSString *)distance;
 - (void) backgroundWorkerSendStateChange: (EBTrackingState) state;
 
 @end
@@ -40,7 +38,6 @@ typedef enum {
 
 @property (nonatomic, strong) ESTBeacon         *beacon;
 @property (nonatomic, strong) ESTBeaconManager  *beaconManager;
-@property (nonatomic, strong) ESTBeaconManager  *staticBeaconManager;
 @property (nonatomic, strong) ESTBeaconRegion   *bikeMovingRegion;
 @property (nonatomic, strong) ESTBeaconRegion   *bikeStaticRegion;
 

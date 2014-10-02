@@ -12,9 +12,8 @@
 
 @interface EstibikeViewController ()
 
-@property (nonatomic, weak) IBOutlet UILabel *distanceLabel;
-@property (nonatomic, weak) IBOutlet UILabel *currentSpeed;
 @property (nonatomic, weak) IBOutlet UILabel *debugLabel;
+@property (nonatomic, weak) IBOutlet UILabel *waitingLabel;
 @property (nonatomic, weak) IBOutlet UIButton *controlButton;
 @property EBTrackingState trackingState;
 @property (nonatomic, strong) EBGPXTrack *track;
@@ -73,7 +72,8 @@
     //Create UIImageView
     UIImageView *backgroundImageView = [[UIImageView alloc] initWithFrame:self.view.frame]; //or in your case you should use your _blurView
     backgroundImageView.image = [UIImage imageNamed:@"splash_screen.png"];
-    self.controlButton.hidden = YES;
+    [self setLabelsToWaitingState];
+    
     
     //set it as a subview
     [self.view addSubview:backgroundImageView]; //in your case, again, use _blurView
@@ -99,6 +99,7 @@
     
     NSLog(@"setlabels to ready");
     [self setDebugText:@"Ready"];
+    self.waitingLabel.text = @"#estibike ready...";
     self.controlButton.hidden = NO;
     self.controlButton.backgroundColor = [UIColor colorWithRed:(0/255.0) green:(128.0/255.0) blue:(64.0/255.0) alpha:1.0];
     [self.controlButton setTitle:@"Start" forState:UIControlStateNormal];
@@ -115,6 +116,7 @@
 - (void) setLabelsToTrackingState {
     NSLog(@"setlabels to tracking");
     [self setDebugText:@"Tracking"];
+    self.waitingLabel.text = @"#estibike go go go!";
     self.controlButton.hidden = YES;
 }
 
@@ -122,12 +124,27 @@
     NSLog(@"setlabels to finalise");
     //self.statusLabel.text = @"Waiting to finalise";
     //self.currentSpeed.text = @"average speed";
-    self.distanceLabel.text = [NSString stringWithFormat:@"%.2f m", [[PSLocationManager sharedLocationManager] totalDistance]];
+    //self.distanceLabel.text = [NSString stringWithFormat:@"%.2f m", [[PSLocationManager sharedLocationManager] totalDistance]];
     self.controlButton.hidden = NO;
     self.controlButton.backgroundColor = [UIColor redColor];
     [self.controlButton setTitle:@"Finish" forState:UIControlStateNormal];
+    self.waitingLabel.text = @"#estibike needs a rest";
     [self setDebugText:@"Ready to finish"];
 }
+
+- (void) setLabelsToWaitingState {
+    
+    NSLog(@"setlabels to waiting");
+    //self.statusLabel.text = @"Waiting to finalise";
+    //self.currentSpeed.text = @"average speed";
+    //self.distanceLabel.text = [NSString stringWithFormat:@"%.2f m", [[PSLocationManager sharedLocationManager] totalDistance]];
+    self.controlButton.hidden = YES;
+    //self.controlButton.backgroundColor = [UIColor redColor];
+    //[self.controlButton setTitle:@"Finish" forState:UIControlStateNormal];
+    [self setDebugText:@"Waiting"];
+    self.waitingLabel.text = @"#estibike waiting...";
+}
+
 
 #pragma mark EBBackgroundWorkerDelegate
 - (void) backgroundWorkerSendStateChange:(EBTrackingState)state {
@@ -142,7 +159,7 @@
         switch (state) {
             case EBWaiting:
                 //no buttons
-                self.controlButton.hidden = YES;
+                [self setLabelsToWaitingState];
                 break;
             case EBReadyToTrack:
                 [self setLabelsToReadyState];
@@ -173,10 +190,10 @@
     [self setDebugText:msg];
 }
 - (void) backgroundWorkerUpdatedSpeed:(NSString *)speed {
-    self.currentSpeed.text = speed;
+    //self.currentSpeed.text = speed;
 }
 - (void) backgroundWorkerUpdatedDistance:(NSString *)distance {
-    self.distanceLabel.text = distance;
+    //self.distanceLabel.text = distance;
 }
 
 @end

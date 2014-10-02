@@ -87,6 +87,12 @@
                                                      NSLog(@"%@",[uploadStatus debugDescription]);
                                                      //self.debugLabel.text = [uploadStatus debugDescription];
                                                      //[self sendDebug:[uploadStatus debugDescription]];
+                                                     UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Upload done"
+                                                                                                  message:[uploadStatus debugDescription]
+                                                                                                 delegate:nil
+                                                                                        cancelButtonTitle:@"Ok"
+                                                                                        otherButtonTitles: nil];
+                                                     [av show];
                                                  }
          
                                                  failure:^(NSError *error) {
