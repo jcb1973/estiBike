@@ -17,6 +17,7 @@
 @property (nonatomic, weak) IBOutlet UIButton *controlButton;
 @property EBTrackingState trackingState;
 @property (nonatomic, strong) EBGPXTrack *track;
+@property UIImageView *backgroundImageView;
 
 @end
 
@@ -70,15 +71,17 @@
     // I'm the person who is going to listen to you... Any time you call method from protocol, I'll deal with it.
     [[EBBackgroundWorker sharedManager] setDelegate:self];
     //Create UIImageView
-    UIImageView *backgroundImageView = [[UIImageView alloc] initWithFrame:self.view.frame]; //or in your case you should use your _blurView
-    backgroundImageView.image = [UIImage imageNamed:@"splash_screen.png"];
+    self.backgroundImageView = [[UIImageView alloc] initWithFrame:self.view.frame]; //or in your case you should use your _blurView
+    self.backgroundImageView.image = [UIImage imageNamed:@"splash_screen.png"];
+    //ivs = [NSMutableArray array];
+    //img = [UIImage animatedImageNamed:@"explosion" duration:2.0];
     [self setLabelsToWaitingState];
     
     
     //set it as a subview
-    [self.view addSubview:backgroundImageView]; //in your case, again, use _blurView
+    [self.view addSubview:self.backgroundImageView]; //in your case, again, use _blurView
     //just in case
-    [self.view sendSubviewToBack:backgroundImageView];
+    [self.view sendSubviewToBack:self.backgroundImageView];
     [self setDebugText:@"Waiting"];
 }
 
@@ -103,6 +106,7 @@
     self.controlButton.hidden = NO;
     self.controlButton.backgroundColor = [UIColor colorWithRed:(0/255.0) green:(128.0/255.0) blue:(64.0/255.0) alpha:1.0];
     [self.controlButton setTitle:@"Start" forState:UIControlStateNormal];
+    self.backgroundImageView.image = [UIImage imageNamed:@"splash_screen.png"];
     
     if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateBackground) {
         [[UIApplication sharedApplication] cancelAllLocalNotifications];
@@ -117,7 +121,21 @@
     NSLog(@"setlabels to tracking");
     [self setDebugText:@"Tracking"];
     self.waitingLabel.text = @"#estibike go go go!";
+    self.backgroundImageView.image = [UIImage animatedImageNamed:@"splash_screen" duration:0.09];
+    //set it as a subview
+    [self.view addSubview:self.backgroundImageView]; //in your case, again, use _blurView
+    //just in case
+    [self.view sendSubviewToBack:self.backgroundImageView];
     self.controlButton.hidden = YES;
+}
+- (void) setLabelsToCouldFinishState {
+        NSLog(@"etLabelsToCouldFinishState");
+        [self setDebugText:@"Could finish"];
+        self.backgroundImageView.image = [UIImage animatedImageNamed:@"splash_screen" duration:0.75];
+        //set it as a subview
+        [self.view addSubview:self.backgroundImageView]; //in your case, again, use _blurView
+        //just in case
+        [self.view sendSubviewToBack:self.backgroundImageView];
 }
 
 - (void) setLabelsToFinaliseState {
@@ -130,6 +148,7 @@
     [self.controlButton setTitle:@"Finish" forState:UIControlStateNormal];
     self.waitingLabel.text = @"#estibike needs a rest";
     [self setDebugText:@"Ready to finish"];
+    self.backgroundImageView.image = [UIImage imageNamed:@"splash_screen.png"];
 }
 
 - (void) setLabelsToWaitingState {
@@ -143,6 +162,7 @@
     //[self.controlButton setTitle:@"Finish" forState:UIControlStateNormal];
     [self setDebugText:@"Waiting"];
     self.waitingLabel.text = @"#estibike waiting...";
+    self.backgroundImageView.image = [UIImage imageNamed:@"splash_screen.png"];
 }
 
 
@@ -169,6 +189,7 @@
                 break;
             case EBCouldFinish:
                 // don't do anything?
+                [self setLabelsToCouldFinishState];
                 break;
             case EBReadyToFinalise:
                 [self setLabelsToFinaliseState];
