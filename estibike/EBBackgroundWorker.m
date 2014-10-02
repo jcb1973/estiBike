@@ -57,8 +57,8 @@ int firstRecordedRSSI = -1;
                                                                     identifier:EB_MOVING_REGION];
         NSUUID *staticUUID = [[NSUUID alloc] initWithUUIDString:self.bikeStaticUUID];
         self.bikeStaticRegion = [[ESTBeaconRegion alloc] initWithProximityUUID:staticUUID
-                                                                         major:55129
-                                                                         minor:48863
+                                                                         major:[self.bikeMajor integerValue]
+                                                                         minor:[self.bikeMinor integerValue]
                                                                     identifier:EB_STATIC_REGION];
         
         [[PSLocationManager sharedLocationManager] prepLocationUpdates];
