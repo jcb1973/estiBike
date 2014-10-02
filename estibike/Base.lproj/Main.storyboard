@@ -38,16 +38,19 @@
                                 <rect key="frame" x="72" y="447" width="176" height="49"/>
                                 <color key="backgroundColor" red="0.0" green="0.50196081400000003" blue="0.25098040700000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="49" id="J04-Cw-wZ3"/>
-                                    <constraint firstAttribute="width" constant="176" id="cTZ-8T-HkB"/>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="49" id="dq0-z6-zVv"/>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="176" id="eVB-i0-5Ki"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="28"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="27"/>
                                 <state key="normal" title="Start ">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="handleUserInteraction:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="1FT-Mh-IDw"/>
                                 </connections>
@@ -55,13 +58,13 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="bAe-Wb-BuY" secondAttribute="trailing" constant="56" id="91M-V3-i7M"/>
                             <constraint firstItem="veD-Uh-hX3" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" id="OfD-kL-y3y"/>
                             <constraint firstItem="bAe-Wb-BuY" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="56" id="fiP-5c-KlK"/>
                             <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="bAe-Wb-BuY" secondAttribute="bottom" constant="20" id="mSe-xX-C4Z"/>
-                            <constraint firstItem="bAe-Wb-BuY" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="56" id="mij-sn-CSa"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="bAe-Wb-BuY" secondAttribute="trailing" constant="56" id="zlh-s4-uzQ"/>
                         </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="keyPath" value="YES"/>
+                        </userDefinedRuntimeAttributes>
                     </view>
                     <connections>
                         <outlet property="controlButton" destination="bAe-Wb-BuY" id="RPK-bW-pmT"/>

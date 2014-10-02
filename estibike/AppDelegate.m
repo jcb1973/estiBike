@@ -38,6 +38,9 @@
     }
     
     //--- your custom code
+    //[UIButton appearance ]
+    [UIButton appearance].layer.cornerRadius = 10;
+    [[UIButton appearance] setClipsToBounds:YES];
     EBBackgroundWorker *backgroundWorker = [EBBackgroundWorker sharedManager];
     [backgroundWorker lookForBikeMovement];
 
