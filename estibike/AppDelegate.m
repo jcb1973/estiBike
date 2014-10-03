@@ -41,6 +41,11 @@
     //[UIButton appearance ]
     [UIButton appearance].layer.cornerRadius = 10;
     [[UIButton appearance] setClipsToBounds:YES];
+    // Global apperance updates.
+    // UINavigationBar and UIBarButtonItem appearance proxies.
+    //[[UIButton appearance]
+     //setTextAttributes: @{NSFontAttributeName:[UIFont fontWithName:@"SlatePro-Bk" size:20.0],
+     //                          NSForegroundColorAttributeName: [UIColor whiteColor]}  forState:UIControlStateNormal];
     EBBackgroundWorker *backgroundWorker = [EBBackgroundWorker sharedManager];
     [backgroundWorker lookForBikeMovement];
 

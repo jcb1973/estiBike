@@ -78,6 +78,9 @@
     //img = [UIImage animatedImageNamed:@"explosion" duration:2.0];
     [self setLabelsToWaitingState];
     
+    // font
+    //self.waitingLabel.font = [UIFont fontWithName:@"SlatePro-Bk" size:50.0];
+    
     
     //set it as a subview
     [self.view addSubview:self.backgroundImageView]; //in your case, again, use _blurView
@@ -105,7 +108,7 @@
     [self setDebugText:@"Ready"];
     self.waitingLabel.text = @"#estibike ready...";
     self.controlButton.hidden = NO;
-    self.controlButton.backgroundColor = [UIColor colorWithRed:(0/255.0) green:(128.0/255.0) blue:(64.0/255.0) alpha:1.0];
+    self.controlButton.backgroundColor = [UIColor colorWithRed:(163/255.0) green:(195.0/255.0) blue:(167.0/255.0) alpha:1.0];
     [self.controlButton setTitle:@"Start" forState:UIControlStateNormal];
     self.backgroundImageView.image = [UIImage imageNamed:@"splash_screen.png"];
     
@@ -145,7 +148,8 @@
     //self.currentSpeed.text = @"average speed";
     //self.distanceLabel.text = [NSString stringWithFormat:@"%.2f m", [[PSLocationManager sharedLocationManager] totalDistance]];
     self.controlButton.hidden = NO;
-    self.controlButton.backgroundColor = [UIColor redColor];
+    //self.controlButton.backgroundColor = [UIColor redColor];
+    self.controlButton.backgroundColor = [UIColor colorWithRed:(144.0/255.0) green:(40.0/255.0) blue:(102.0/255.0) alpha:1.0];
     [self.controlButton setTitle:@"Finish" forState:UIControlStateNormal];
     self.waitingLabel.text = @"#estibike needs a rest";
     [self setDebugText:@"Ready to finish"];

@@ -17,6 +17,8 @@
 		52AD6D0319DDD75E007C5066 /* splash_screen3.png in Resources */ = {isa = PBXBuildFile; fileRef = 52AD6CFD19DDD75E007C5066 /* splash_screen3.png */; };
 		52AD6D0419DDD75E007C5066 /* splash_screen2.png in Resources */ = {isa = PBXBuildFile; fileRef = 52AD6CFE19DDD75E007C5066 /* splash_screen2.png */; };
 		52AD6D0519DDD75E007C5066 /* splash_screen1.png in Resources */ = {isa = PBXBuildFile; fileRef = 52AD6CFF19DDD75E007C5066 /* splash_screen1.png */; };
+		52AD6D0819DE7F53007C5066 /* BrandonText-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 52AD6D0719DE7F53007C5066 /* BrandonText-Medium.otf */; };
+		52AD6D0A19DE8092007C5066 /* Monotype  - SlatePro-Bk.otf in Resources */ = {isa = PBXBuildFile; fileRef = 52AD6D0919DE8092007C5066 /* Monotype  - SlatePro-Bk.otf */; };
 		52C9100819D93726008F9A1C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 52C9100719D93726008F9A1C /* main.m */; };
 		52C9100B19D93726008F9A1C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 52C9100A19D93726008F9A1C /* AppDelegate.m */; };
 		52C9101119D93726008F9A1C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 52C9100F19D93726008F9A1C /* Main.storyboard */; };
@@ -53,6 +55,8 @@
 		52AD6CFD19DDD75E007C5066 /* splash_screen3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = splash_screen3.png; path = ../../Desktop/splash_screen3.png; sourceTree = "<group>"; };
 		52AD6CFE19DDD75E007C5066 /* splash_screen2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = splash_screen2.png; path = ../../Desktop/splash_screen2.png; sourceTree = "<group>"; };
 		52AD6CFF19DDD75E007C5066 /* splash_screen1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = splash_screen1.png; path = ../../Desktop/splash_screen1.png; sourceTree = "<group>"; };
+		52AD6D0719DE7F53007C5066 /* BrandonText-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "BrandonText-Medium.otf"; sourceTree = "<group>"; };
+		52AD6D0919DE8092007C5066 /* Monotype  - SlatePro-Bk.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Monotype  - SlatePro-Bk.otf"; sourceTree = "<group>"; };
 		52C9100219D93726008F9A1C /* estibike.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = estibike.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		52C9100619D93726008F9A1C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		52C9100719D93726008F9A1C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -111,6 +115,15 @@
 			name = Images;
 			sourceTree = "<group>";
 		};
+		52AD6D0619DE7F30007C5066 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				52AD6D0919DE8092007C5066 /* Monotype  - SlatePro-Bk.otf */,
+				52AD6D0719DE7F53007C5066 /* BrandonText-Medium.otf */,
+			);
+			name = Fonts;
+			sourceTree = "<group>";
+		};
 		52C90FF919D93726008F9A1C = {
 			isa = PBXGroup;
 			children = (
@@ -161,6 +174,7 @@
 		52C9100519D93726008F9A1C /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				52AD6D0619DE7F30007C5066 /* Fonts */,
 				52C9100619D93726008F9A1C /* Info.plist */,
 				52C9100719D93726008F9A1C /* main.m */,
 			);
@@ -297,6 +311,8 @@
 				52AD6D0419DDD75E007C5066 /* splash_screen2.png in Resources */,
 				522720F319DC1E6F00E40183 /* splash_screen.png in Resources */,
 				52C9101319D93726008F9A1C /* Images.xcassets in Resources */,
+				52AD6D0819DE7F53007C5066 /* BrandonText-Medium.otf in Resources */,
+				52AD6D0A19DE8092007C5066 /* Monotype  - SlatePro-Bk.otf in Resources */,
 				52AD6D0119DDD75E007C5066 /* splash_screen5.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
