@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="vXZ-lx-hvc">
     <dependencies>
-        <deployment defaultVersion="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="Monotype  - SlatePro-Bk.otf">
+            <string>SlatePro-Bk</string>
+            <string>SlatePro-Bk</string>
             <string>SlatePro-Bk</string>
             <string>SlatePro-Bk</string>
             <string>SlatePro-Bk</string>
@@ -25,28 +26,31 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Debug info" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="veD-Uh-hX3">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Debug info" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="veD-Uh-hX3">
                                 <rect key="frame" x="16" y="20" width="279" height="64"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="64" id="k90-HF-fms"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" name="SlatePro-Bk" family="Slate Pro" pointSize="12"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QS1-w4-xG2">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="#estibike needs a rest" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QS1-w4-xG2">
                                 <rect key="frame" x="16" y="366" width="288" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="288" id="PTz-cc-Waf"/>
                                     <constraint firstAttribute="height" constant="40" id="Y8X-gF-3KZ"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="SlatePro-Bk" family="Slate Pro" pointSize="24"/>
+                                <fontDescription key="fontDescription" name="SlatePro-Bk" family="Slate Pro" pointSize="28"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bAe-Wb-BuY">
-                                <rect key="frame" x="72" y="447" width="176" height="49"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bAe-Wb-BuY">
+                                <rect key="frame" x="16" y="499" width="288" height="49"/>
                                 <color key="backgroundColor" red="0.0" green="0.50196081400000003" blue="0.25098040700000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="49" id="dq0-z6-zVv"/>
-                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="176" id="eVB-i0-5Ki"/>
+                                    <constraint firstAttribute="height" constant="49" id="EUn-R9-o3u"/>
+                                    <constraint firstAttribute="width" constant="288" id="dm9-qS-YqV"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="SlatePro-Bk" family="Slate Pro" pointSize="28"/>
                                 <inset key="contentEdgeInsets" minX="0.0" minY="8" maxX="0.0" maxY="0.0"/>
@@ -63,20 +67,45 @@
                                     <action selector="handleUserInteraction:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="1FT-Mh-IDw"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Distance" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H1z-ce-Ybf">
+                                <rect key="frame" x="76" y="422" width="159" height="27"/>
+                                <fontDescription key="fontDescription" name="SlatePro-Bk" family="Slate Pro" pointSize="24"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Time" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="twO-AB-OAL">
+                                <rect key="frame" x="76" y="450" width="159" height="29"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="29" id="eqy-i9-JaM"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="SlatePro-Bk" family="Slate Pro" pointSize="24"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstAttribute="bottom" secondItem="QS1-w4-xG2" secondAttribute="bottom" constant="162" id="3ee-zA-90G"/>
+                            <constraint firstItem="veD-Uh-hX3" firstAttribute="centerX" secondItem="H1z-ce-Ybf" secondAttribute="centerX" id="85a-bg-ceF"/>
+                            <constraint firstItem="twO-AB-OAL" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="60" id="9GI-Xt-6zc"/>
+                            <constraint firstItem="twO-AB-OAL" firstAttribute="leading" secondItem="H1z-ce-Ybf" secondAttribute="leading" id="Feq-Aa-vco"/>
                             <constraint firstItem="veD-Uh-hX3" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" id="OfD-kL-y3y"/>
-                            <constraint firstItem="bAe-Wb-BuY" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="56" id="fiP-5c-KlK"/>
+                            <constraint firstItem="twO-AB-OAL" firstAttribute="top" secondItem="H1z-ce-Ybf" secondAttribute="bottom" constant="1" id="b9d-Ck-6d9"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="veD-Uh-hX3" secondAttribute="trailing" constant="9" id="eaN-yF-p5G"/>
+                            <constraint firstItem="veD-Uh-hX3" firstAttribute="centerX" secondItem="twO-AB-OAL" secondAttribute="centerX" id="f9N-1i-smj"/>
+                            <constraint firstItem="bAe-Wb-BuY" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" id="fiP-5c-KlK"/>
+                            <constraint firstItem="H1z-ce-Ybf" firstAttribute="top" secondItem="QS1-w4-xG2" secondAttribute="bottom" constant="16" id="j31-pY-yFu"/>
+                            <constraint firstItem="veD-Uh-hX3" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" id="jXg-CZ-SbT"/>
                             <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="bAe-Wb-BuY" secondAttribute="bottom" constant="20" id="mSe-xX-C4Z"/>
+                            <constraint firstItem="veD-Uh-hX3" firstAttribute="leading" secondItem="QS1-w4-xG2" secondAttribute="leading" id="pPP-M8-Rzc"/>
+                            <constraint firstItem="bAe-Wb-BuY" firstAttribute="top" secondItem="twO-AB-OAL" secondAttribute="bottom" constant="20" id="qjN-p6-8mG"/>
                         </constraints>
-                        <userDefinedRuntimeAttributes>
-                            <userDefinedRuntimeAttribute type="boolean" keyPath="keyPath" value="YES"/>
-                        </userDefinedRuntimeAttributes>
                     </view>
                     <connections>
                         <outlet property="controlButton" destination="bAe-Wb-BuY" id="RPK-bW-pmT"/>
                         <outlet property="debugLabel" destination="veD-Uh-hX3" id="SYU-dU-EjI"/>
+                        <outlet property="distanceLabel" destination="H1z-ce-Ybf" id="vnr-cs-cAY"/>
+                        <outlet property="timeLabel" destination="twO-AB-OAL" id="nGd-qf-CiR"/>
                         <outlet property="waitingLabel" destination="QS1-w4-xG2" id="rWH-iz-SWh"/>
                     </connections>
                 </viewController>

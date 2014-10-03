@@ -44,6 +44,8 @@ typedef enum {
 @property (nonatomic, strong) ESTBeaconRegion   *bikeStaticRegion;
 
 @property (nonatomic, strong) EBGPXTrack *track;
+@property (nonatomic, strong) NSDate *journeyStarted;
+@property (nonatomic, strong) NSDate *journeyEnded;
 
 @property (atomic) EBTrackingState trackingState;
 
@@ -53,5 +55,6 @@ typedef enum {
 - (void) startTracking;
 - (void) stopTracking;
 - (void) finish;
+- (NSTimeInterval) getJourneyTime;
 
 @end

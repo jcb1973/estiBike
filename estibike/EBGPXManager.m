@@ -15,7 +15,7 @@
 #define STRAVA_APP_SECRET @"7bc2f3a1a2e58f492f339d8b9f4e5b745fab9ce2"
 #define STRAVA_OAUTH @"9727d907a025965a2d1bc526ace39ebe17623511"
 
-#define DO_REAL_UPLOAD  YES
+#define DO_REAL_UPLOAD  NO
 
 @implementation EBGPXManager
 

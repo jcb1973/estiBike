@@ -67,7 +67,8 @@ int firstRecordedRSSI = -1;
     
     self.trackingState = EBTracking;
     [self setUpTrack];
-    [[PSLocationManager sharedLocationManager] startLocationUpdates];
+    self.journeyStarted = [NSDate date];
+    [[PSLocationManager sharedLocationManager] startLocationUpdates]; 
     
     if ([self.delegate respondsToSelector:@selector(backgroundWorkerSendStateChange:)]) {
             [self.delegate backgroundWorkerSendStateChange:EBTracking];
@@ -86,12 +87,15 @@ int firstRecordedRSSI = -1;
     [self sendDebug:@"Stopped tracking"];
 }
 
+- (NSTimeInterval) getJourneyTime {
+    return [self.journeyEnded timeIntervalSinceDate:self.journeyStarted];
+}
+
 - (void) lookForBikeMovement {
     
-    // start looking for moving bike
+    // start looking for bike - moving or static
     [self.beaconManager startMonitoringForRegion:self.bikeMovingRegion];
     [self.beaconManager startMonitoringForRegion:self.bikeStaticRegion];
-    //[self.beaconManager requestStateForRegion:self.bikeMovingRegion];
 }
 
 - (void) setUpTrack {
@@ -216,7 +220,7 @@ int firstRecordedRSSI = -1;
                     firstRecordedRSSI = abs(beacon.rssi);
                 } else {
                     int currentRSSI = abs(beacon.rssi);
-                    if ((currentRSSI - firstRecordedRSSI >= 5
+                    if ((currentRSSI - firstRecordedRSSI >= 2
                          ) && firstRecordedRSSI != -1)  {
                        self.trackingState = EBReadyToFinalise;
                     }

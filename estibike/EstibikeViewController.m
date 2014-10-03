@@ -14,6 +14,8 @@
 
 @property (nonatomic, weak) IBOutlet UILabel *debugLabel;
 @property (nonatomic, weak) IBOutlet UILabel *waitingLabel;
+@property (nonatomic, weak) IBOutlet UILabel *distanceLabel;
+@property (nonatomic, weak) IBOutlet UILabel *timeLabel;
 @property (nonatomic, weak) IBOutlet UIButton *controlButton;
 @property EBTrackingState trackingState;
 @property BOOL bikeInMotion;
@@ -72,15 +74,10 @@
     // I'm the person who is going to listen to you... Any time you call method from protocol, I'll deal with it.
     [[EBBackgroundWorker sharedManager] setDelegate:self];
     //Create UIImageView
-    self.backgroundImageView = [[UIImageView alloc] initWithFrame:self.view.frame]; //or in your case you should use your _blurView
-    self.backgroundImageView.image = [UIImage imageNamed:@"splash_screen.png"];
-    //ivs = [NSMutableArray array];
-    //img = [UIImage animatedImageNamed:@"explosion" duration:2.0];
+    self.backgroundImageView = [[UIImageView alloc] initWithFrame:self.view.frame];     self.backgroundImageView.image = [UIImage imageNamed:@"splash_screen.png"];
     [self setLabelsToWaitingState];
-    
-    // font
-    //self.waitingLabel.font = [UIFont fontWithName:@"SlatePro-Bk" size:50.0];
-    
+    self.distanceLabel.text = @"";
+    self.timeLabel.text = @"";
     
     //set it as a subview
     [self.view addSubview:self.backgroundImageView]; //in your case, again, use _blurView
@@ -96,10 +93,10 @@
 
 - (void) resetCounters {
     NSLog(@"resetLabels");
-    //self.currentSpeed.text = @"Current speed";
-    //self.distanceLabel.text = @"Distance travelled";
     [self setDebugText:@"Debug info"];
     self.controlButton.hidden = YES;
+    self.distanceLabel.text = @"";
+    self.timeLabel.text = @"";
 }
 
 - (void) setLabelsToReadyState {
@@ -131,29 +128,48 @@
     //just in case
     [self.view sendSubviewToBack:self.backgroundImageView];
     self.controlButton.hidden = YES;
+    self.distanceLabel.text = @"";
+    self.timeLabel.text = @"";
 }
 - (void) setLabelsToCouldFinishState {
         NSLog(@"etLabelsToCouldFinishState");
         [self setDebugText:@"Could finish"];
         self.backgroundImageView.image = [UIImage animatedImageNamed:@"splash_screen" duration:0.75];
         //set it as a subview
-        [self.view addSubview:self.backgroundImageView]; //in your case, again, use _blurView
+        [self.view addSubview:self.backgroundImageView];
         //just in case
         [self.view sendSubviewToBack:self.backgroundImageView];
 }
 
 - (void) setLabelsToFinaliseState {
     NSLog(@"setlabels to finalise");
-    //self.statusLabel.text = @"Waiting to finalise";
-    //self.currentSpeed.text = @"average speed";
-    //self.distanceLabel.text = [NSString stringWithFormat:@"%.2f m", [[PSLocationManager sharedLocationManager] totalDistance]];
+    
+    double distance =[[PSLocationManager sharedLocationManager] totalDistance];
+    self.distanceLabel.text = [NSString stringWithFormat:@"%.2f km", (distance / 1000)];
+    
+    NSTimeInterval journeyTime = [[EBBackgroundWorker sharedManager] getJourneyTime];
+    NSInteger days = ((NSInteger) journeyTime / (60 * 60 * 24));
+    NSInteger hours = (((NSInteger) journeyTime / (60 * 60)) - (days * 24));
+    NSInteger minutes = (((NSInteger) journeyTime / 60) - (days * 24 * 60) - (hours * 60));
+    NSInteger seconds = ((NSInteger) round(journeyTime) % 60);
+    
+    NSString *timespent = [NSString stringWithFormat:@"%02lim %02lis",(long)minutes,(long)seconds];
+    self.timeLabel.text = timespent;
+    
     self.controlButton.hidden = NO;
-    //self.controlButton.backgroundColor = [UIColor redColor];
     self.controlButton.backgroundColor = [UIColor colorWithRed:(144.0/255.0) green:(40.0/255.0) blue:(102.0/255.0) alpha:1.0];
     [self.controlButton setTitle:@"Finish" forState:UIControlStateNormal];
     self.waitingLabel.text = @"#estibike needs a rest";
     [self setDebugText:@"Ready to finish"];
     self.backgroundImageView.image = [UIImage imageNamed:@"splash_screen.png"];
+    
+    if ([[UIApplication sharedApplication] applicationState] == UIApplicationStateBackground) {
+        [[UIApplication sharedApplication] cancelAllLocalNotifications];
+        UILocalNotification *notification = [[UILocalNotification alloc] init];
+        notification.alertBody = @"Hey! #estibike done!";
+        notification.soundName = UILocalNotificationDefaultSoundName;
+        [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
+    }
 }
 
 - (void) setLabelsToWaitingState {
