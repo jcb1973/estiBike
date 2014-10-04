@@ -29,7 +29,7 @@
 }
 
 
-- (void) logGPXToFile:(EBGPXTrack *)track {
+- (void) logGPXToFile:(EBGPXTrack *)track withUpload:(BOOL)doUpload {
     NSLog(@"logGPXToFile:+");
     
     NSArray *directoryPaths = NSSearchPathForDirectoriesInDomains (NSDocumentDirectory, NSUserDomainMask, YES);
@@ -43,7 +43,7 @@
                           [timeStampObj stringValue]];
     
     if (!track.trackpoints.count > 0) {
-        NSLog(@"logGPXToFile: nothing to upload");
+        NSLog(@"logGPXToFile: nothing to write to file");
     } else {
     
         NSString *gpx = track.dumpGPX;
@@ -59,7 +59,9 @@
         }
         NSURL* URL = [NSURL fileURLWithPath:fileName];
         
-        [self uploadGPX:URL withName:track.name];
+        if (doUpload) {
+            [self uploadGPX:URL withName:track.name];
+        }
         //self.track = nil;
         //
         NSLog(@"%@", gpx);

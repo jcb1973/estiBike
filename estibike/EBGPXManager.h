@@ -13,6 +13,6 @@
 
 + (EBGPXManager *)sharedManager;
 
-- (void) logGPXToFile:(EBGPXTrack *)track;
+- (void) logGPXToFile:(EBGPXTrack *)track withUpload:(BOOL)doUpload;
 
 @end

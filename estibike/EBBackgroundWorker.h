@@ -30,7 +30,7 @@ typedef enum {
 @end
 
 @interface EBBackgroundWorker : NSObject <ESTBeaconManagerDelegate, PSLocationManagerDelegate>
-// who I'm going to talk to
+// who I'm going to talk to (AKA Hollywood - don't call us... we'll call you)
 @property (nonatomic, assign) id<EBBackgroundWorkerDelegate> delegate;
 
 @property (nonatomic, strong) NSString *bikeMovingUUID;
@@ -54,7 +54,7 @@ typedef enum {
 - (void) lookForBikeMovement;
 - (void) startTracking;
 - (void) stopTracking;
-- (void) finish;
+- (void) complete:(BOOL)doUpload;
 - (NSTimeInterval) getJourneyTime;
 
 @end

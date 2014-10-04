@@ -16,6 +16,8 @@
 @property (nonatomic, weak) IBOutlet UILabel *waitingLabel;
 @property (nonatomic, weak) IBOutlet UILabel *distanceLabel;
 @property (nonatomic, weak) IBOutlet UILabel *timeLabel;
+@property (nonatomic, weak) IBOutlet UILabel *uploadLabel;
+@property (nonatomic, weak) IBOutlet UISwitch *uploadSwitch;
 @property (nonatomic, weak) IBOutlet UIButton *controlButton;
 @property EBTrackingState trackingState;
 @property BOOL bikeInMotion;
@@ -26,25 +28,9 @@
 
 @implementation EstibikeViewController
 
-
-- (IBAction) forceStopTracking:(id)sender {
-    NSLog(@"forceStopTracking:+");
-    
-    [self resetCounters];
-    
-    if ([[EBBackgroundWorker sharedManager] trackingState] == EBTracking) {
-    
-        [[EBBackgroundWorker sharedManager] stopTracking];
-        [[EBBackgroundWorker sharedManager] finish];
-    } else {
-        NSLog(@"wasn't tracking no need to stop");
-    }
-}
-
 - (IBAction) handleUserInteraction:(id)sender {
     
-    UIButton *btn = (UIButton *)sender;
-    NSString *action = [[btn titleLabel] text];
+    NSString *action = [[(UIButton *)sender titleLabel] text];
     
     if ([action isEqualToString:@"Start"]) {
         if ([[EBBackgroundWorker sharedManager] trackingState] != EBTracking) {
@@ -56,9 +42,7 @@
         }
     } else if ([action isEqualToString:@"Finish"]) {
         if ([[EBBackgroundWorker sharedManager] trackingState] == EBReadyToFinalise) {
-            
-            [[EBBackgroundWorker sharedManager] stopTracking];
-            [[EBBackgroundWorker sharedManager] finish];
+            [[EBBackgroundWorker sharedManager] complete:self.uploadSwitch.isOn];
             [self resetCounters];
             
         } else {
@@ -76,8 +60,6 @@
     //Create UIImageView
     self.backgroundImageView = [[UIImageView alloc] initWithFrame:self.view.frame];     self.backgroundImageView.image = [UIImage imageNamed:@"splash_screen.png"];
     [self setLabelsToWaitingState];
-    self.distanceLabel.text = @"";
-    self.timeLabel.text = @"";
     
     //set it as a subview
     [self.view addSubview:self.backgroundImageView]; //in your case, again, use _blurView
@@ -97,6 +79,8 @@
     self.controlButton.hidden = YES;
     self.distanceLabel.text = @"";
     self.timeLabel.text = @"";
+    self.uploadLabel.hidden = YES;
+    self.uploadSwitch.hidden = YES;
 }
 
 - (void) setLabelsToReadyState {
@@ -130,6 +114,8 @@
     self.controlButton.hidden = YES;
     self.distanceLabel.text = @"";
     self.timeLabel.text = @"";
+    self.uploadLabel.hidden = YES;
+    self.uploadSwitch.hidden = YES;
 }
 - (void) setLabelsToCouldFinishState {
         NSLog(@"etLabelsToCouldFinishState");
@@ -156,6 +142,8 @@
     NSString *timespent = [NSString stringWithFormat:@"%02lim %02lis",(long)minutes,(long)seconds];
     self.timeLabel.text = timespent;
     
+    self.uploadLabel.hidden = NO;
+    self.uploadSwitch.hidden = NO;
     self.controlButton.hidden = NO;
     self.controlButton.backgroundColor = [UIColor colorWithRed:(144.0/255.0) green:(40.0/255.0) blue:(102.0/255.0) alpha:1.0];
     [self.controlButton setTitle:@"Finish" forState:UIControlStateNormal];
@@ -179,6 +167,10 @@
     [self setDebugText:@"Waiting"];
     self.waitingLabel.text = @"#estibike waiting...";
     self.backgroundImageView.image = [UIImage imageNamed:@"splash_screen.png"];
+    self.distanceLabel.text = @"";
+    self.timeLabel.text = @"";
+    self.uploadLabel.hidden = YES;
+    self.uploadSwitch.hidden = YES;
 }
 
 #pragma mark EBBackgroundWorkerDelegate

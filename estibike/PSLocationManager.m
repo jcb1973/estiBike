@@ -227,7 +227,7 @@ static const CGFloat kSpeedNotSet = -1.0;
 }
 
 - (BOOL)startLocationUpdates {
-    NSLog(@"startLocationUpdates+");
+    NSLog(@"\n\n\n!*!*!* startLocationUpdates+!*!*!*\n\n\n");
     if ([CLLocationManager locationServicesEnabled]) {
         self.readyToExposeDistanceAndSpeed = YES;
         
@@ -246,6 +246,7 @@ static const CGFloat kSpeedNotSet = -1.0;
 }
 
 - (void)stopLocationUpdates {
+    NSLog(@"\n\n\n!*!*!* stopLocationUpdates+!*!*!*\n\n\n");
     [self.locationPingTimer invalidate];
     [self.locationManager stopUpdatingLocation];
     [self.locationManager stopUpdatingHeading];

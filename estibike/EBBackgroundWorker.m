@@ -14,7 +14,7 @@
 
 #define EB_UUID         @"B9407F30-F5F8-466E-AFF9-25556B57FE6D"
 #define EB_MOTION_UUID  @"B9407F30-F5F8-466E-AFF9-25556B57FE6A"
-#define EB_MAJOR        34696
+#define EB_MAJOR        34696 //keeping these in to avoid false positives
 #define EB_MINOR        11408
 #define EB_MOVING_REGION @"estibikemoving"
 #define EB_STATIC_REGION @"estibike"
@@ -34,8 +34,9 @@
 int firstRecordedRSSI = -1;
 
 - (id)init {
+    
     if (self = [super init]) {
-        NSLog(@"called init");
+
         self.trackingState = EBWaiting;
         self.bikeMovingUUID = EB_MOTION_UUID;
         self.bikeStaticUUID = EB_UUID;
@@ -57,7 +58,6 @@ int firstRecordedRSSI = -1;
                                                                          minor:[self.bikeMinor integerValue]
                                                                     identifier:EB_STATIC_REGION];
         
-        [[PSLocationManager sharedLocationManager] prepLocationUpdates];
         [PSLocationManager sharedLocationManager].delegate = self;
     }
     return self;
@@ -82,8 +82,6 @@ int firstRecordedRSSI = -1;
     NSLog(@"Stopping PSLocationManager services");
     [[PSLocationManager sharedLocationManager] stopLocationUpdates];
     [[PSLocationManager sharedLocationManager] resetLocationUpdates];
-    //[self.staticBeaconManager stopRangingBeaconsInRegion:self.bikeStaticRegion];
-    //[self.beaconManager stopRangingBeaconsInRegion:self.bikeMovingRegion];
     [self sendDebug:@"Stopped tracking"];
 }
 
@@ -110,15 +108,13 @@ int firstRecordedRSSI = -1;
     }
 }
 
-- (void) finish {
+- (void) complete:(BOOL)doUpload {
     
-    [[EBGPXManager sharedManager] logGPXToFile:self.track];
+    [[EBGPXManager sharedManager] logGPXToFile:self.track withUpload:doUpload];
     self.track = nil;
     self.trackingState = EBWaiting;
-    
+    [self stopTracking];
 }
-
-
 
 #pragma mark ESTBeaconManagerDelegate
 - (void)beaconManager:(ESTBeaconManager *)manager didDetermineState:(CLRegionState)state forRegion:(ESTBeaconRegion *)region
@@ -138,6 +134,7 @@ int firstRecordedRSSI = -1;
                 
                 if (self.trackingState == EBWaiting) {
                     self.trackingState = EBReadyToTrack;
+                    [[PSLocationManager sharedLocationManager] prepLocationUpdates];
                 }
             }
             break;
@@ -183,6 +180,7 @@ int firstRecordedRSSI = -1;
                 firstRecordedRSSI = -1;
             } else if (self.trackingState == EBWaiting) {
                 self.trackingState = EBReadyToTrack;
+                [[PSLocationManager sharedLocationManager] prepLocationUpdates];
             }
         } else {
             [self sendDebug:[NSString stringWithFormat:@"Not moving - tracking state is %u", self.trackingState]];
@@ -205,7 +203,7 @@ int firstRecordedRSSI = -1;
         ESTBeacon *beacon = [[ESTBeacon alloc] init];
         beacon = [beacons lastObject];
         if (beacon != nil) {
-            NSLog(@"beacon proximity %d current speed is %.2f rssi %d", beacon.proximity, [[PSLocationManager sharedLocationManager] currentSpeed], beacon.rssi);
+            NSLog(@"beacon proximity %d current speed is %.2f rssi %d", beacon.proximity, [[PSLocationManager sharedLocationManager] currentSpeed], abs(beacon.rssi));
             
             //
             // Here's where we figure out we can finish.
@@ -214,7 +212,7 @@ int firstRecordedRSSI = -1;
             
             if (beacon.proximity >= CLProximityNear) {
             //self.trackingState = EBReadyToFinalise;
-                NSLog(@"beacon proximity %d current speed is %.2f lastRSSI %d currentRSSI %ld", beacon.proximity, [[PSLocationManager sharedLocationManager] currentSpeed], firstRecordedRSSI, (long)beacon.rssi);
+                NSLog(@"beacon proximity %d current speed is %.2f firstRecordedRSSI %d currentRSSI %ld", beacon.proximity, [[PSLocationManager sharedLocationManager] currentSpeed], firstRecordedRSSI, (long)abs(beacon.rssi));
                 // see if the signal strength is decreasing
                 if (firstRecordedRSSI == -1) {
                     firstRecordedRSSI = abs(beacon.rssi);
@@ -241,18 +239,16 @@ int firstRecordedRSSI = -1;
         if (self.trackingState == EBWaiting) {
             NSLog(@"starting ranging");
             [self.beaconManager startRangingBeaconsInRegion:self.bikeMovingRegion];
-
-            if([self.delegate respondsToSelector:@selector(backgroundWorkerSendStateChange:)]) {
-                [self.delegate backgroundWorkerSendStateChange:EBReadyToTrack];
-            }
+            self.trackingState = EBReadyToTrack;
+            [[PSLocationManager sharedLocationManager] prepLocationUpdates];
         } else if (self.trackingState == EBReadyToFinalise) {
+            self.trackingState = EBTracking;
             // we paused, start again
             NSLog(@"RE starting ranging");
             [self.beaconManager startRangingBeaconsInRegion:self.bikeMovingRegion];
-            
-            if([self.delegate respondsToSelector:@selector(backgroundWorkerSendStateChange:)]) {
-                [self.delegate backgroundWorkerSendStateChange:EBTracking];
-            }
+        }
+        if ([self.delegate respondsToSelector:@selector(backgroundWorkerSendStateChange:)]) {
+            [self.delegate backgroundWorkerSendStateChange:self.trackingState];
         }
     }
 }
@@ -272,10 +268,8 @@ int firstRecordedRSSI = -1;
         } else if (self.trackingState == EBReadyToTrack) {
             NSLog(@"was ready to track, so sending waiting state change");
             self.trackingState = EBWaiting;
+            [[PSLocationManager sharedLocationManager] stopLocationUpdates];
         }
-        // should keep going...?
-        //[self stopTracking];
-        //[self.beaconManager stopRangingBeaconsInRegion:region];
     } else if ([region.identifier isEqualToString:EB_STATIC_REGION] && self.trackingState == EBCouldFinish) {
         NSLog(@"exited static bike region in EBCouldFinish state, can finalise");
         self.trackingState = EBReadyToFinalise;
