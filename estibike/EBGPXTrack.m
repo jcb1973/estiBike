@@ -18,6 +18,9 @@
         self.name = name;
         self.createdAt = [NSDate date];
         self.trackpoints = [[NSMutableArray alloc] init];
+        self.dateFormatter = [[NSDateFormatter alloc] init];
+        [self.dateFormatter setDateFormat:@"'yyyy-MM-dd'T'HH:mm:ss'Z'"];
+        
     }
     
     return self;
@@ -29,11 +32,15 @@
     return YES;
 }
 
+- (NSString*) getName {
+    
+    return [self.dateFormatter stringFromDate:self.createdAt];
+}
+
 - (NSString*) getGPXHeader {
     
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"'<time>'yyyy-MM-dd'T'HH:mm:ss'Z</time>'"];
-    NSString *time = [dateFormatter stringFromDate:self.createdAt];
+    
+    NSString *time = [self.dateFormatter stringFromDate:self.createdAt];
     
     return [NSString stringWithFormat:@"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<gpx version=\"1.1\">\n<metadata><time>%@</time>\n</metadata>\n",
             time];

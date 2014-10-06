@@ -36,11 +36,9 @@
     NSString *documentsDirectoryPath = [directoryPaths objectAtIndex:0];
     NSLog(@"%@", documentsDirectoryPath);
     
-    NSTimeInterval timeStamp = [[NSDate date] timeIntervalSince1970];
-    NSNumber *timeStampObj = [NSNumber numberWithDouble: timeStamp];
     NSString *fileName = [NSString stringWithFormat:@"%@/%@_out.gpx",
                           documentsDirectoryPath,
-                          [timeStampObj stringValue]];
+                          [track getName]];
     
     if (!track.trackpoints.count > 0) {
         NSLog(@"logGPXToFile: nothing to write to file");

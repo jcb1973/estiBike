@@ -14,9 +14,11 @@
 @property (nonatomic, strong) NSMutableArray *trackpoints;
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSDate *createdAt;
+@property (nonatomic, strong) NSDateFormatter *dateFormatter;
 
 - (instancetype) initWithName:(NSString *)name;
 - (BOOL) addTrackpoint:(EBGPXTrackpoint *) point;
 - (NSString*) dumpGPX;
+- (NSString*) getName;
 
 @end
