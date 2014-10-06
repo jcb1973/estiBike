@@ -19,6 +19,6 @@
 - (instancetype) initWithName:(NSString *)name;
 - (BOOL) addTrackpoint:(EBGPXTrackpoint *) point;
 - (NSString*) dumpGPX;
-- (NSString*) getName;
+- (NSString*) getStartTimeFormatted;
 
 @end

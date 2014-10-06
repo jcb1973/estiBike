@@ -38,7 +38,7 @@
     
     NSString *fileName = [NSString stringWithFormat:@"%@/%@_out.gpx",
                           documentsDirectoryPath,
-                          [track getName]];
+                          [track getStartTimeFormatted]];
     
     if (!track.trackpoints.count > 0) {
         NSLog(@"logGPXToFile: nothing to write to file");

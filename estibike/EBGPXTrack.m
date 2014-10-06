@@ -32,18 +32,15 @@
     return YES;
 }
 
-- (NSString*) getName {
+- (NSString*) getStartTimeFormatted {
     
     return [self.dateFormatter stringFromDate:self.createdAt];
 }
 
 - (NSString*) getGPXHeader {
     
-    
-    NSString *time = [self.dateFormatter stringFromDate:self.createdAt];
-    
     return [NSString stringWithFormat:@"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<gpx version=\"1.1\">\n<metadata><time>%@</time>\n</metadata>\n",
-            time];
+            [self getStartTimeFormatted]];
     
 }
 
