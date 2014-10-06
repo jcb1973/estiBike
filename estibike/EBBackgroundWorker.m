@@ -43,7 +43,7 @@ int firstRecordedRSSI = -1;
         self.bikeMajor = [NSNumber numberWithInt:EB_MAJOR];
         self.bikeMinor = [NSNumber numberWithInt:EB_MINOR];
         
-        // setup Estimote beacon managers - one for static one for moving
+        // setup Estimote beacon manager and define two regions
         self.beaconManager = [[ESTBeaconManager alloc] init];
         self.beaconManager.delegate = self;
         
@@ -129,13 +129,7 @@ int firstRecordedRSSI = -1;
             NSLog(@"inside %@ region", region.identifier);
             
             if ([region.identifier isEqualToString:EB_MOVING_REGION]) {
-                
                 [self.beaconManager startRangingBeaconsInRegion:self.bikeMovingRegion];
-                // move this? only alert if we range in <=near?
-//                if (self.trackingState == EBWaiting) {
-//                    self.trackingState = EBReadyToTrack;
-//                    [[PSLocationManager sharedLocationManager] prepLocationUpdates];
-//                }
             }
             break;
         case CLRegionStateOutside:
@@ -195,12 +189,11 @@ int firstRecordedRSSI = -1;
                 [self sendDebug:@"tracking, but not moving - could finish?"];
                 self.trackingState = EBCouldFinish;
                 // look for the static bike
-                NSLog(@"So I'll look for the static bike");
+                NSLog(@"I'll look for the static bike");
                 [self.beaconManager startRangingBeaconsInRegion:self.bikeStaticRegion];
             }
         }
     } else if ([region.identifier isEqualToString:EB_STATIC_REGION] && self.trackingState == EBCouldFinish) {
-        //NSLog(@"could finish ???");
         [self sendDebug:@"could finish?"];
         // We think we've stopped, determine if we should send "EBFinalise" state
         ESTBeacon *beacon = [[ESTBeacon alloc] init];
@@ -211,8 +204,6 @@ int firstRecordedRSSI = -1;
             //
             // Here's where we figure out we can finish.
             //
-            //if (((beacon.proximity >= CLProximityNear && [[PSLocationManager sharedLocationManager] currentSpeed] <= EB_BIKE_MIN_SPEED))) {
-            
             if (beacon.proximity >= CLProximityNear) {
             //self.trackingState = EBReadyToFinalise;
                 NSLog(@"beacon proximity %d current speed is %.2f firstRecordedRSSI %d currentRSSI %ld", beacon.proximity, [[PSLocationManager sharedLocationManager] currentSpeed], firstRecordedRSSI, (long)abs(beacon.rssi));
@@ -291,7 +282,6 @@ int firstRecordedRSSI = -1;
         EBGPXTrackpoint *point = [[EBGPXTrackpoint alloc] initWithLongitude:[NSNumber numberWithDouble:waypoint.coordinate.longitude] latitude:[NSNumber numberWithDouble:waypoint.coordinate.latitude]];
         [self.track addTrackpoint:point];
         if ([[PSLocationManager sharedLocationManager] currentSpeed] > 0) {
-           // double kmPerHour = [[PSLocationManager sharedLocationManager] currentSpeed] * 60 * 60 / 1000 ;
 
             if([self.delegate respondsToSelector:@selector(backgroundWorkerUpdatedSpeed:)]) {
                 [self.delegate backgroundWorkerUpdatedSpeed:[[PSLocationManager sharedLocationManager] currentSpeed]];
@@ -309,8 +299,6 @@ int firstRecordedRSSI = -1;
     } else {
         strengthText = NSLocalizedString(@"...", @"");
     }
-    
-    //NSLog(@"%@", strengthText);
 }
 
 - (void)locationManagerSignalConsistentlyWeak:(PSLocationManager *)locationManager {
@@ -319,9 +307,6 @@ int firstRecordedRSSI = -1;
 
 - (void)locationManager:(PSLocationManager *)locationManager distanceUpdated:(CLLocationDistance)distance {
     
-//    if([self.delegate respondsToSelector:@selector(backgroundWorkerUpdatedDistance:)]) {
-//        [self.delegate backgroundWorkerUpdatedDistance:[NSString stringWithFormat:@"%.2f metres", distance]];
-//    }
 }
 
 - (void)locationManager:(PSLocationManager *)locationManager error:(NSError *)error {
