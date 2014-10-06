@@ -131,11 +131,11 @@ int firstRecordedRSSI = -1;
             if ([region.identifier isEqualToString:EB_MOVING_REGION]) {
                 
                 [self.beaconManager startRangingBeaconsInRegion:self.bikeMovingRegion];
-                // move this? only alert if we range in >=near?
-                if (self.trackingState == EBWaiting) {
-                    self.trackingState = EBReadyToTrack;
-                    [[PSLocationManager sharedLocationManager] prepLocationUpdates];
-                }
+                // move this? only alert if we range in <=near?
+//                if (self.trackingState == EBWaiting) {
+//                    self.trackingState = EBReadyToTrack;
+//                    [[PSLocationManager sharedLocationManager] prepLocationUpdates];
+//                }
             }
             break;
         case CLRegionStateOutside:
@@ -162,12 +162,15 @@ int firstRecordedRSSI = -1;
       didRangeBeacons:(NSArray *)beacons
              inRegion:(ESTBeaconRegion *)region {
 
-    NSLog(@"ranging + %@", region.identifier);
     if ([region.identifier isEqualToString:EB_MOVING_REGION]) {
         
         ESTBeacon *beacon = [[ESTBeacon alloc] init];
         beacon = [beacons lastObject];
         if (beacon != nil) {
+            if (self.trackingState == EBWaiting && beacon.proximity <= CLProximityNear) {
+                self.trackingState = EBReadyToTrack;
+                [[PSLocationManager sharedLocationManager] prepLocationUpdates];
+            }
             [self sendDebug:@"Bike in motion"];
             if ([self.delegate respondsToSelector:@selector(backgroundWorkerSendBikeMotionFlag:)]) {
                 [self.delegate backgroundWorkerSendBikeMotionFlag:YES];
