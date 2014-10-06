@@ -131,7 +131,7 @@ int firstRecordedRSSI = -1;
             if ([region.identifier isEqualToString:EB_MOVING_REGION]) {
                 
                 [self.beaconManager startRangingBeaconsInRegion:self.bikeMovingRegion];
-                
+                // move this? only alert if we range in >=near?
                 if (self.trackingState == EBWaiting) {
                     self.trackingState = EBReadyToTrack;
                     [[PSLocationManager sharedLocationManager] prepLocationUpdates];
