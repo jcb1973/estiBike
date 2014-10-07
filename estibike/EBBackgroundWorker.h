@@ -45,7 +45,6 @@ typedef enum {
 
 @property (nonatomic, strong) EBGPXTrack *track;
 @property (nonatomic, strong) NSDate *journeyStarted;
-@property (nonatomic, strong) NSDate *journeyEnded;
 
 @property (atomic) EBTrackingState trackingState;
 

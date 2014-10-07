@@ -86,7 +86,7 @@ int firstRecordedRSSI = -1;
 }
 
 - (NSTimeInterval) getJourneyTime {
-    return [self.journeyEnded timeIntervalSinceDate:self.journeyStarted];
+    return [[NSDate date] timeIntervalSinceDate:self.journeyStarted];
 }
 
 - (void) lookForBike {
