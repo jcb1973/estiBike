@@ -71,7 +71,7 @@ int firstRecordedRSSI = -1;
     [[PSLocationManager sharedLocationManager] startLocationUpdates]; 
     
     if ([self.delegate respondsToSelector:@selector(backgroundWorkerSendStateChange:)]) {
-            [self.delegate backgroundWorkerSendStateChange:EBTracking];
+            [self.delegate backgroundWorkerSendStateChange:self.trackingState];
     }
     
     [self sendDebug:@"Started tracking"];
@@ -89,7 +89,7 @@ int firstRecordedRSSI = -1;
     return [self.journeyEnded timeIntervalSinceDate:self.journeyStarted];
 }
 
-- (void) lookForBikeMovement {
+- (void) lookForBike {
     
     // start looking for bike - moving or static
     [self.beaconManager startMonitoringForRegion:self.bikeMovingRegion];
@@ -128,15 +128,18 @@ int firstRecordedRSSI = -1;
             break;
         case CLRegionStateInside:
             NSLog(@"inside %@ region", region.identifier);
-            
-            if ([region.identifier isEqualToString:EB_MOVING_REGION]) {
-                [self.beaconManager startRangingBeaconsInRegion:self.bikeMovingRegion];
+            // Doesn't matter what region -  look for movement. Don't change state though
+            [self.beaconManager startRangingBeaconsInRegion:self.bikeMovingRegion];
+            if ([region.identifier isEqualToString:EB_STATIC_REGION] && self.trackingState == EBCouldFinish) {
+                // perhaps we should finish?
+                self.trackingState = EBReadyToFinalise;
             }
             break;
         case CLRegionStateOutside:
             //[self.beaconManager stopRangingBeaconsInRegion:region];
             NSLog(@"outside %@ region", region.identifier);
-            if ([region.identifier isEqualToString:EB_STATIC_REGION]) {
+            // outside either - set to ready to finalise if in EBCouldFinish?
+            if ([region.identifier isEqualToString:EB_STATIC_REGION] || [region.identifier isEqualToString:EB_MOVING_REGION]) {
                 if (self.trackingState == EBCouldFinish) {
                     self.trackingState = EBReadyToFinalise;
                 }
@@ -219,6 +222,8 @@ int firstRecordedRSSI = -1;
                     }
                 }
             }
+        } else {
+            // in static region and got nil... - could finalise?
         }
     }
     if ([self.delegate respondsToSelector:@selector(backgroundWorkerSendStateChange:)]) {
@@ -245,6 +250,9 @@ int firstRecordedRSSI = -1;
         if ([self.delegate respondsToSelector:@selector(backgroundWorkerSendStateChange:)]) {
             [self.delegate backgroundWorkerSendStateChange:self.trackingState];
         }
+    } else if ([region.identifier isEqualToString:EB_STATIC_REGION]) {
+        // might as well start looking for movement here too, but not change state
+        [self.beaconManager startRangingBeaconsInRegion:self.bikeMovingRegion];
     }
 }
 
@@ -255,8 +263,6 @@ int firstRecordedRSSI = -1;
         NSLog(@"\n ***** EXITED %@ region with current tracking state %u***** \n", region.identifier, self.trackingState);
         if (self.trackingState == EBTracking) {
             self.trackingState = EBCouldFinish;
-            
-            // look for the static bike
             NSLog(@"Looking for the static bike");
             [self.beaconManager startRangingBeaconsInRegion:self.bikeStaticRegion];
             
@@ -264,6 +270,9 @@ int firstRecordedRSSI = -1;
             NSLog(@"was ready to track, so sending waiting state change");
             self.trackingState = EBWaiting;
             [[PSLocationManager sharedLocationManager] stopLocationUpdates];
+        } else if (self.trackingState == EBCouldFinish) {
+            NSLog(@"was EBCouldFinish, so sending EBReadyToFinalise");
+            self.trackingState = EBReadyToFinalise;
         }
     } else if ([region.identifier isEqualToString:EB_STATIC_REGION] && self.trackingState == EBCouldFinish) {
         NSLog(@"exited static bike region in EBCouldFinish state, can finalise");

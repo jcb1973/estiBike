@@ -236,12 +236,9 @@
 }
 
 - (void) backgroundWorkerUpdatedSpeed:(double)speed {
-    //self.currentSpeed.text = speed;
+    
     // the bigger this is, the faster we want the animation to be
-    //double fps = 3 * log(19) * log(9.5 * (speed * speed));
-    //double newSpeed = 1 - (1/(speed * speed));
     double newDuration = pow(log(speed * speed), -1);
-    //if (i == 1) newDuration = 1;
     if (newDuration == INFINITY || newDuration == 0) newDuration = 1;
     
     NSLog(@"speed is %.2f", speed);

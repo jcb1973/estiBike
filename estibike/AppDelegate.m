@@ -47,7 +47,7 @@
      //setTextAttributes: @{NSFontAttributeName:[UIFont fontWithName:@"SlatePro-Bk" size:20.0],
      //                          NSForegroundColorAttributeName: [UIColor whiteColor]}  forState:UIControlStateNormal];
     EBBackgroundWorker *backgroundWorker = [EBBackgroundWorker sharedManager];
-    [backgroundWorker lookForBikeMovement];
+    [backgroundWorker lookForBike];
 
     return YES;
 }

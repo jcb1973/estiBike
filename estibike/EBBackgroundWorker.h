@@ -51,7 +51,7 @@ typedef enum {
 
 + (EBBackgroundWorker *)sharedManager;
 
-- (void) lookForBikeMovement;
+- (void) lookForBike;
 - (void) startTracking;
 - (void) stopTracking;
 - (void) complete:(BOOL)doUpload;
