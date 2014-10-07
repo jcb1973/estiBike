@@ -164,23 +164,21 @@ int firstRecordedRSSI = -1;
         ESTBeacon *beacon = [[ESTBeacon alloc] init];
         beacon = [beacons lastObject];
         if (beacon != nil) {
+            [self sendDebug:@"Bike in motion"];
+            
             if (self.trackingState == EBWaiting && beacon.proximity <= CLProximityNear) {
                 self.trackingState = EBReadyToTrack;
                 [[PSLocationManager sharedLocationManager] prepLocationUpdates];
             }
-            [self sendDebug:@"Bike in motion"];
             if ([self.delegate respondsToSelector:@selector(backgroundWorkerSendBikeMotionFlag:)]) {
                 [self.delegate backgroundWorkerSendBikeMotionFlag:YES];
             }
+            
             // if we've paused, restart tracking tracking then
             if (self.trackingState == EBReadyToFinalise || self.trackingState == EBCouldFinish) {
                 self.trackingState = EBTracking;
                 [self startTracking];
-                // reset
                 firstRecordedRSSI = -1;
-            } else if (self.trackingState == EBWaiting) {
-                self.trackingState = EBReadyToTrack;
-                [[PSLocationManager sharedLocationManager] prepLocationUpdates];
             }
         } else {
             [self sendDebug:[NSString stringWithFormat:@"Not moving - tracking state is %u", self.trackingState]];

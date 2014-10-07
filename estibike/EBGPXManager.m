@@ -36,7 +36,7 @@
     NSString *documentsDirectoryPath = [directoryPaths objectAtIndex:0];
     NSLog(@"%@", documentsDirectoryPath);
     
-    NSString *fileName = [NSString stringWithFormat:@"%@/%@_out.gpx",
+    NSString *fileName = [NSString stringWithFormat:@"%@/%@.gpx",
                           documentsDirectoryPath,
                           [track getStartTimeFormatted]];
     

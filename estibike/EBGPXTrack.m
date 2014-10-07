@@ -19,7 +19,7 @@
         self.createdAt = [NSDate date];
         self.trackpoints = [[NSMutableArray alloc] init];
         self.dateFormatter = [[NSDateFormatter alloc] init];
-        [self.dateFormatter setDateFormat:@"'yyyy-MM-dd'T'HH:mm:ss'Z'"];
+        [self.dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'Z'"];
         
     }
     
