@@ -58,7 +58,8 @@
     // I'm the person who is going to listen to you... Any time you call method from protocol, I'll deal with it.
     [[EBBackgroundWorker sharedManager] setDelegate:self];
     //Create UIImageView
-    self.backgroundImageView = [[UIImageView alloc] initWithFrame:self.view.frame];     self.backgroundImageView.image = [UIImage imageNamed:@"splash_screen.png"];
+    self.backgroundImageView = [[UIImageView alloc] initWithFrame:self.view.frame];
+    self.backgroundImageView.image = [UIImage imageNamed:@"splash_screen.png"];
     [self setLabelsToWaitingState];
     
     //set it as a subview
@@ -108,7 +109,7 @@
     self.waitingLabel.text = @"#estibike go go go!";
     self.backgroundImageView.image = [UIImage animatedImageNamed:@"splash_screen" duration:0.09];
     //set it as a subview
-    [self.view addSubview:self.backgroundImageView]; //in your case, again, use _blurView
+    [self.view addSubview:self.backgroundImageView];
     //just in case
     [self.view sendSubviewToBack:self.backgroundImageView];
     self.controlButton.hidden = YES;
@@ -133,22 +134,15 @@
     
     double distance =[[PSLocationManager sharedLocationManager] totalDistance];
     self.distanceLabel.text = [NSString stringWithFormat:@"%.2f km", (distance / 1000)];
-    
-    NSTimeInterval journeyTime = [[EBBackgroundWorker sharedManager] getJourneyTime];
-    NSInteger days = ((NSInteger) journeyTime / (60 * 60 * 24));
-    NSInteger hours = (((NSInteger) journeyTime / (60 * 60)) - (days * 24));
-    NSInteger minutes = (((NSInteger) journeyTime / 60) - (days * 24 * 60) - (hours * 60));
-    NSInteger seconds = ((NSInteger) round(journeyTime) % 60);
-    
-    NSString *timespent = [NSString stringWithFormat:@"%02lim %02lis",(long)minutes,(long)seconds];
-    self.timeLabel.text = timespent;
+    NSString *timeSpent = [self getFormattedTimeString];
+    self.timeLabel.text = timeSpent;
     
     self.uploadLabel.hidden = NO;
     self.uploadSwitch.hidden = NO;
     self.controlButton.hidden = NO;
     self.controlButton.backgroundColor = [UIColor colorWithRed:(144.0/255.0) green:(40.0/255.0) blue:(102.0/255.0) alpha:1.0];
     [self.controlButton setTitle:@"Finish" forState:UIControlStateNormal];
-    self.waitingLabel.text = @"#estibike needs a rest";
+    self.waitingLabel.text = [self getMessageForJourney:distance];
     [self setDebugText:@"Ready to finish"];
     self.backgroundImageView.image = [UIImage imageNamed:@"splash_screen.png"];
     
@@ -173,6 +167,40 @@
     self.uploadLabel.hidden = YES;
     self.uploadSwitch.hidden = YES;
 }
+
+- (NSString*) getFormattedTimeString {
+    
+    NSTimeInterval journeyTime = [[EBBackgroundWorker sharedManager] getJourneyTime];
+    
+    long journeySeconds = lroundf(journeyTime);
+    int hours = journeySeconds / 3600;
+    int mins = (journeySeconds % 3600) / 60;
+    int secs = journeySeconds % 60;
+    
+    if (hours > 0) {
+        return [NSString stringWithFormat:@"%dh %02dm %02ds", hours, mins,secs];
+    } else {
+        return [NSString stringWithFormat:@"%02dm %02ds", mins,secs];
+    }
+}
+
+- (NSString*) getMessageForJourney:(double)distance {
+    
+    NSString *encouragingString;
+    
+    if (distance < 5) {
+        encouragingString = @"#estibike is tired now!";
+    } else if (distance > 5 && distance < 10) {
+        encouragingString = @"#estibike is very tired now!";
+    } else {
+        encouragingString = @"Please let #estibike rest!";
+    }
+    
+    return encouragingString;
+    
+}
+
+
 
 #pragma mark EBBackgroundWorkerDelegate
 - (void) backgroundWorkerSendBikeMotionFlag:(BOOL)isInMotion {
