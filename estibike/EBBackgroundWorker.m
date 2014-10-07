@@ -111,7 +111,6 @@ int firstRecordedRSSI = -1;
 - (void) complete:(BOOL)doUpload {
     
     [[EBGPXManager sharedManager] logGPXToFile:self.track withUpload:doUpload];
-    self.journeyEnded = [NSDate date];
     self.track = nil;
     self.trackingState = EBWaiting;
     [self stopTracking];
