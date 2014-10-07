@@ -60,9 +60,6 @@
         if (doUpload) {
             [self uploadGPX:URL withName:track.name];
         }
-        //self.track = nil;
-        //
-        NSLog(@"%@", gpx);
     }
     NSLog(@"logGPXToFile:-");
 }
@@ -85,8 +82,6 @@
                                                  success:^(StravaActivityUploadStatus *uploadStatus) {
                                                      NSLog(@"upload sent");
                                                      NSLog(@"%@",[uploadStatus debugDescription]);
-                                                     //self.debugLabel.text = [uploadStatus debugDescription];
-                                                     //[self sendDebug:[uploadStatus debugDescription]];
                                                      UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Upload done"
                                                                                                   message:[uploadStatus debugDescription]
                                                                                                  delegate:nil
