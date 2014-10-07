@@ -188,12 +188,12 @@
     
     NSString *encouragingString;
     
-    if (distance < 5) {
-        encouragingString = @"#estibike is tired now!";
-    } else if (distance > 5 && distance < 10) {
+    if (distance < 5000) {
+        encouragingString = @"#estibike needs a rest!";
+    } else if (distance > 5000 && distance < 1000) {
         encouragingString = @"#estibike is very tired now!";
     } else {
-        encouragingString = @"Please let #estibike rest!";
+        encouragingString = @"PLEASE let #estibike rest!";
     }
     
     return encouragingString;
