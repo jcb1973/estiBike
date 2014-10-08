@@ -1,1 +1,4 @@
 *.gpx
+Pods
+Podfile.lock
+estibike.xcworkspace
