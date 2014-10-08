@@ -1,1 +1,0 @@
-../../../FRDStravaClient/Classes/FRDStravaClient+Segment.h

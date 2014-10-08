@@ -1,1 +1,0 @@
-../../../FRDStravaClient/Classes/StravaGear.h

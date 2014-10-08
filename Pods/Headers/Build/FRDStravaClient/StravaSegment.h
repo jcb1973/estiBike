@@ -1,1 +1,0 @@
-../../../FRDStravaClient/Classes/StravaSegment.h
