@@ -23,15 +23,13 @@
     NSLog(@"didFinishLaunchingWithOptions+");
     
     //-- Set Notification
-    if ([application respondsToSelector:@selector(isRegisteredForRemoteNotifications)])
-    {
+    if ([application respondsToSelector:@selector(isRegisteredForRemoteNotifications)]) {
         // iOS 8 Notifications
         [application registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge) categories:nil]];
         
         [application registerForRemoteNotifications];
     }
-    else
-    {
+    else {
         // iOS < 8 Notifications
         [application registerForRemoteNotificationTypes:
          (UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert)];
@@ -41,11 +39,7 @@
     //[UIButton appearance ]
     [UIButton appearance].layer.cornerRadius = 10;
     [[UIButton appearance] setClipsToBounds:YES];
-    // Global apperance updates.
-    // UINavigationBar and UIBarButtonItem appearance proxies.
-    //[[UIButton appearance]
-     //setTextAttributes: @{NSFontAttributeName:[UIFont fontWithName:@"SlatePro-Bk" size:20.0],
-     //                          NSForegroundColorAttributeName: [UIColor whiteColor]}  forState:UIControlStateNormal];
+
     EBBackgroundWorker *backgroundWorker = [EBBackgroundWorker sharedManager];
     [backgroundWorker lookForBike];
 

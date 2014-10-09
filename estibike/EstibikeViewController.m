@@ -57,14 +57,13 @@
 
     // I'm the person who is going to listen to you... Any time you call method from protocol, I'll deal with it.
     [[EBBackgroundWorker sharedManager] setDelegate:self];
-    //Create UIImageView
+
     self.backgroundImageView = [[UIImageView alloc] initWithFrame:self.view.frame];
     self.backgroundImageView.image = [UIImage imageNamed:@"splash_screen.png"];
     [self setLabelsToWaitingState];
     
     //set it as a subview
-    [self.view addSubview:self.backgroundImageView]; //in your case, again, use _blurView
-    //just in case
+    [self.view addSubview:self.backgroundImageView];
     [self.view sendSubviewToBack:self.backgroundImageView];
     [self setDebugText:@"Waiting"];
 }
@@ -123,9 +122,7 @@
         NSLog(@"etLabelsToCouldFinishState");
         [self setDebugText:@"Could finish"];
         self.backgroundImageView.image = [UIImage animatedImageNamed:@"splash_screen" duration:0.75];
-        //set it as a subview
         [self.view addSubview:self.backgroundImageView];
-        //just in case
         [self.view sendSubviewToBack:self.backgroundImageView];
 }
 

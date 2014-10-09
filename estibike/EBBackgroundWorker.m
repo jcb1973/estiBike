@@ -127,8 +127,9 @@ int firstRecordedRSSI = -1;
             break;
         case CLRegionStateInside:
             NSLog(@"inside %@ region", region.identifier);
-            // Doesn't matter what region -  look for movement. Don't change state though
+            // Doesn't matter what region -  look for bike. Don't change state though
             [self.beaconManager startRangingBeaconsInRegion:self.bikeMovingRegion];
+            [self.beaconManager startRangingBeaconsInRegion:self.bikeStaticRegion];
             if ([region.identifier isEqualToString:EB_STATIC_REGION] && self.trackingState == EBCouldFinish) {
                 // perhaps we should finish?
                 self.trackingState = EBReadyToFinalise;
@@ -205,7 +206,13 @@ int firstRecordedRSSI = -1;
             //
             // Here's where we figure out we can finish.
             //
-            if (beacon.proximity >= CLProximityNear) {
+            // Things that mean we can finish: - proximity not immediate
+            //                                 - walking speed (so look for speed < 6000 / 3600 == 1.6)
+            //                                 - weak GPS?
+            //
+            // Maybe we don't need to look for RSSI dropping if we are walking speed...?
+            //
+            if (beacon.proximity >= CLProximityNear || [[PSLocationManager sharedLocationManager] currentSpeed] <= 1.6) {
             //self.trackingState = EBReadyToFinalise;
                 NSLog(@"beacon proximity %d current speed is %.2f firstRecordedRSSI %d currentRSSI %ld", beacon.proximity, [[PSLocationManager sharedLocationManager] currentSpeed], firstRecordedRSSI, (long)abs(beacon.rssi));
                 // see if the signal strength is decreasing
@@ -282,10 +289,12 @@ int firstRecordedRSSI = -1;
 }
 
 #pragma mark PSLocationManagerDelegate
--(void)locationManager:(PSLocationManager *)locationManager waypoint:(CLLocation *)waypoint calculatedSpeed:(double)calculatedSpeed
-{
-    if (self.trackingState == EBTracking) {
-        NSLog(@"called waypoint while tracking+");
+-(void)locationManager:(PSLocationManager *)locationManager waypoint:(CLLocation *)waypoint calculatedSpeed:(double)calculatedSpeed {
+    
+    // if we are tracking, or even if we have paused, or are in finalise state but haven't clicked button yet
+    // basically, any state apart from waiting ( == not started), record the waypoint
+    if (self.trackingState != EBWaiting) {
+        NSLog(@"called waypoint while not in waiting state+");
         EBGPXTrackpoint *point = [[EBGPXTrackpoint alloc] initWithLongitude:[NSNumber numberWithDouble:waypoint.coordinate.longitude] latitude:[NSNumber numberWithDouble:waypoint.coordinate.latitude]];
         [self.track addTrackpoint:point];
         if ([[PSLocationManager sharedLocationManager] currentSpeed] > 0) {
