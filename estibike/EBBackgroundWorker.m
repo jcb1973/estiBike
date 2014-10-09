@@ -292,8 +292,8 @@ int firstRecordedRSSI = -1;
 -(void)locationManager:(PSLocationManager *)locationManager waypoint:(CLLocation *)waypoint calculatedSpeed:(double)calculatedSpeed {
     
     // if we are tracking, or even if we have paused, or are in finalise state but haven't clicked button yet
-    // basically, any state apart from waiting ( == not started), record the waypoint
-    if (self.trackingState != EBWaiting) {
+    // basically, any state apart from waiting or ready to track (i.e. not started), record the waypoint
+    if (self.trackingState != EBWaiting && self.trackingState != EBReadyToTrack) {
         NSLog(@"called waypoint while not in waiting state+");
         EBGPXTrackpoint *point = [[EBGPXTrackpoint alloc] initWithLongitude:[NSNumber numberWithDouble:waypoint.coordinate.longitude] latitude:[NSNumber numberWithDouble:waypoint.coordinate.latitude]];
         [self.track addTrackpoint:point];
