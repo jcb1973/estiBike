@@ -29,7 +29,6 @@ typedef enum {
 
 @end
 
-//@interface EBBackgroundWorker : NSObject <ESTBeaconManagerDelegate, PSLocationManagerDelegate, CLLocationManagerDelegate>
 @interface EBBackgroundWorker : NSObject <ESTBeaconManagerDelegate, PSLocationManagerDelegate>
 // who I'm going to talk to (AKA Hollywood - don't call us... we'll call you)
 @property (nonatomic, assign) id<EBBackgroundWorkerDelegate> delegate;

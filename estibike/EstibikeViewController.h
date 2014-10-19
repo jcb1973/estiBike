@@ -10,7 +10,9 @@
 #import "PSLocationManager.h"
 #import <Foundation/Foundation.h>
 #import "EBBackgroundWorker.h"
+#import "EBGPXManager.h"
+
 // I understand messages from ...
-@interface EstibikeViewController : UIViewController  <EBBackgroundWorkerDelegate>
+@interface EstibikeViewController : UIViewController  <EBBackgroundWorkerDelegate, EBGPXManagerDelegate>
 
 @end

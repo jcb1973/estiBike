@@ -9,7 +9,17 @@
 #import <Foundation/Foundation.h>
 #import "EBGPXTrack.h"
 
+@protocol EBGPXManagerDelegate <NSObject>
+
+- (void) gpxManagerSentResult:(NSString *)msg;
+
+@end
+
 @interface EBGPXManager : NSObject
+
+
+@property (nonatomic, assign) id<EBGPXManagerDelegate> delegate;
+
 
 + (EBGPXManager *)sharedManager;
 

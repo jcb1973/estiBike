@@ -9,6 +9,7 @@
 #import "EstibikeViewController.h"
 #import <CoreLocation/CoreLocation.h>
 #import "EBBackgroundWorker.h"
+#import "EBGPXManager.h"
 
 @interface EstibikeViewController ()
 
@@ -57,6 +58,8 @@
 
     // I'm the person who is going to listen to you... Any time you call method from protocol, I'll deal with it.
     [[EBBackgroundWorker sharedManager] setDelegate:self];
+    [[EBGPXManager sharedManager] setDelegate:self];
+    
 
     self.backgroundImageView = [[UIImageView alloc] initWithFrame:self.view.frame];
     self.backgroundImageView.image = [UIImage imageNamed:@"splash_screen.png"];
@@ -197,7 +200,11 @@
     
 }
 
-
+#pragma mark EBGPXManagerDelegate
+- (void) gpxManagerSentResult:(NSString *)msg {
+    NSLog(@"%@", msg);
+    [self setDebugText:msg];
+}
 
 #pragma mark EBBackgroundWorkerDelegate
 - (void) backgroundWorkerSendBikeMotionFlag:(BOOL)isInMotion {

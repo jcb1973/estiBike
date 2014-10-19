@@ -59,6 +59,10 @@
         
         if (doUpload) {
             [self uploadGPX:URL withName:track.name];
+        } else {
+            if ([self.delegate respondsToSelector:@selector(gpxManagerSentResult:)]) {
+                [self.delegate gpxManagerSentResult:@"No upload requested"];
+            }
         }
     }
     NSLog(@"logGPXToFile:-");
@@ -82,21 +86,27 @@
                                                  success:^(StravaActivityUploadStatus *uploadStatus) {
                                                      NSLog(@"upload sent");
                                                      NSLog(@"%@",[uploadStatus debugDescription]);
-                                                     UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Upload done"
-                                                                                                  message:[uploadStatus debugDescription]
-                                                                                                 delegate:nil
-                                                                                        cancelButtonTitle:@"Ok"
-                                                                                        otherButtonTitles: nil];
-                                                     [av show];
+//                                                     UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Upload done"
+//                                                                                                  message:[uploadStatus debugDescription]
+//                                                                                                 delegate:nil
+//                                                                                        cancelButtonTitle:@"Ok"
+//                                                                                        otherButtonTitles: nil];
+//                                                     [av show];
+                                                     if ([self.delegate respondsToSelector:@selector(gpxManagerSentResult:)]) {
+                                                         [self.delegate gpxManagerSentResult:@"Upload done"];
+                                                     }
                                                  }
          
                                                  failure:^(NSError *error) {
-                                                     UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Upload failed"
-                                                                                                  message:error.localizedDescription
-                                                                                                 delegate:nil
-                                                                                        cancelButtonTitle:@"Ok"
-                                                                                        otherButtonTitles: nil];
-                                                     [av show];
+//                                                     UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Upload failed"
+//                                                                                                  message:error.localizedDescription
+//                                                                                                 delegate:nil
+//                                                                                        cancelButtonTitle:@"Ok"
+//                                                                                        otherButtonTitles: nil];
+//                                                     [av show];
+                                                     if ([self.delegate respondsToSelector:@selector(gpxManagerSentResult:)]) {
+                                                         [self.delegate gpxManagerSentResult:@"Upload failed"];
+                                                     }
                                                  }];
     }
     NSLog(@"uploadGPX:-");
