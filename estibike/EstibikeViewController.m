@@ -119,7 +119,7 @@
     
 }
 - (void) setLabelsToCouldFinishState {
-        NSLog(@"etLabelsToCouldFinishState");
+        NSLog(@"setLabelsToCouldFinishState");
         [self setDebugText:@"Could finish"];
         self.backgroundImageView.image = [UIImage animatedImageNamed:@"splash_screen" duration:0.75];
         [self.view addSubview:self.backgroundImageView];

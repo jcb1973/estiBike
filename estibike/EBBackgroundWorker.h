@@ -29,6 +29,7 @@ typedef enum {
 
 @end
 
+//@interface EBBackgroundWorker : NSObject <ESTBeaconManagerDelegate, PSLocationManagerDelegate, CLLocationManagerDelegate>
 @interface EBBackgroundWorker : NSObject <ESTBeaconManagerDelegate, PSLocationManagerDelegate>
 // who I'm going to talk to (AKA Hollywood - don't call us... we'll call you)
 @property (nonatomic, assign) id<EBBackgroundWorkerDelegate> delegate;
@@ -40,11 +41,13 @@ typedef enum {
 
 @property (nonatomic, strong) ESTBeacon         *beacon;
 @property (nonatomic, strong) ESTBeaconManager  *beaconManager;
+//@property (nonatomic, strong) CLLocationManager   *tempLocationManager;
 @property (nonatomic, strong) ESTBeaconRegion   *bikeMovingRegion;
 @property (nonatomic, strong) ESTBeaconRegion   *bikeStaticRegion;
 
 @property (nonatomic, strong) EBGPXTrack *track;
 @property (nonatomic, strong) NSDate *journeyStarted;
+@property (nonatomic, strong) NSMutableArray *rssiHistory;
 
 @property (atomic) EBTrackingState trackingState;
 
