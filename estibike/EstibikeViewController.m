@@ -14,6 +14,7 @@
 @interface EstibikeViewController ()
 
 @property (nonatomic, weak) IBOutlet UILabel *debugLabel;
+@property (nonatomic, weak) IBOutlet UILabel *gpxStatusLabel;
 @property (nonatomic, weak) IBOutlet UILabel *waitingLabel;
 @property (nonatomic, weak) IBOutlet UILabel *distanceLabel;
 @property (nonatomic, weak) IBOutlet UILabel *timeLabel;
@@ -81,6 +82,7 @@
     [self setDebugText:@"Debug info"];
     self.controlButton.hidden = YES;
     self.distanceLabel.text = @"";
+    self.gpxStatusLabel.text = @"";
     self.timeLabel.text = @"";
     self.uploadLabel.hidden = YES;
     self.uploadSwitch.hidden = YES;
@@ -90,6 +92,7 @@
     
     NSLog(@"setlabels to ready");
     [self setDebugText:@"Ready"];
+    self.gpxStatusLabel.text = @"";
     self.waitingLabel.text = @"#estibike ready...";
     self.controlButton.hidden = NO;
     self.controlButton.backgroundColor = [UIColor colorWithRed:(163/255.0) green:(195.0/255.0) blue:(167.0/255.0) alpha:1.0];
@@ -117,6 +120,7 @@
     self.controlButton.hidden = YES;
     self.distanceLabel.text = @"";
     self.timeLabel.text = @"";
+    self.gpxStatusLabel.text = @"";
     self.uploadLabel.hidden = YES;
     self.uploadSwitch.hidden = YES;
     
@@ -161,6 +165,7 @@
     self.controlButton.hidden = YES;
     [self setDebugText:@"Waiting"];
     self.waitingLabel.text = @"#estibike waiting...";
+    //self.gpxStatusLabel.text = @"";
     self.backgroundImageView.image = [UIImage imageNamed:@"splash_screen.png"];
     self.distanceLabel.text = @"";
     self.timeLabel.text = @"";
@@ -201,9 +206,8 @@
 }
 
 #pragma mark EBGPXManagerDelegate
-- (void) gpxManagerSentResult:(NSString *)msg {
-    NSLog(@"%@", msg);
-    [self setDebugText:msg];
+- (void) gpxManagerSentMessage:(NSString *)msg {
+    self.gpxStatusLabel.text = msg;
 }
 
 #pragma mark EBBackgroundWorkerDelegate

@@ -60,8 +60,8 @@
         if (doUpload) {
             [self uploadGPX:URL withName:track.name];
         } else {
-            if ([self.delegate respondsToSelector:@selector(gpxManagerSentResult:)]) {
-                [self.delegate gpxManagerSentResult:@"No upload requested"];
+            if ([self.delegate respondsToSelector:@selector(gpxManagerSentMessage:)]) {
+                [self.delegate gpxManagerSentMessage:@"No upload requested"];
             }
         }
     }
@@ -92,8 +92,8 @@
 //                                                                                        cancelButtonTitle:@"Ok"
 //                                                                                        otherButtonTitles: nil];
 //                                                     [av show];
-                                                     if ([self.delegate respondsToSelector:@selector(gpxManagerSentResult:)]) {
-                                                         [self.delegate gpxManagerSentResult:@"Upload done"];
+                                                     if ([self.delegate respondsToSelector:@selector(gpxManagerSentMessage:)]) {
+                                                         [self.delegate gpxManagerSentMessage:@"Upload done"];
                                                      }
                                                  }
          
@@ -104,8 +104,8 @@
 //                                                                                        cancelButtonTitle:@"Ok"
 //                                                                                        otherButtonTitles: nil];
 //                                                     [av show];
-                                                     if ([self.delegate respondsToSelector:@selector(gpxManagerSentResult:)]) {
-                                                         [self.delegate gpxManagerSentResult:@"Upload failed"];
+                                                     if ([self.delegate respondsToSelector:@selector(gpxManagerSentMessage:)]) {
+                                                         [self.delegate gpxManagerSentMessage:@"Upload failed"];
                                                      }
                                                  }];
     }

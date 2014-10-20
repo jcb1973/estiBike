@@ -11,7 +11,7 @@
 
 @protocol EBGPXManagerDelegate <NSObject>
 
-- (void) gpxManagerSentResult:(NSString *)msg;
+- (void) gpxManagerSentMessage:(NSString *)msg;
 
 @end
 

@@ -181,6 +181,7 @@
 -(double) getAverageMovingRSSI {
     int total = 0;
     int count = [self.rssiHistory count];
+    if (count == 0) {return -1.00;}
     
     for (NSNumber *item in self.rssiHistory) {
         
@@ -193,8 +194,11 @@
 
 -(double) getSTDDevForMovingRSSI {
     
-    double average = [self getAverageMovingRSSI];
     int count = [self.rssiHistory count];
+    if (count == 0) {return -1.00;}
+    
+    double average = [self getAverageMovingRSSI];
+    
     // Sum difference squares
     double diff, diffTotal = 0;
     
@@ -277,15 +281,20 @@
                 //
                 double avgRSSI = [self getAverageMovingRSSI];
                 double stddevRSSI = [self getSTDDevForMovingRSSI];
-                double targetRSSI = avgRSSI + (1.0 * stddevRSSI);
+                double targetRSSI = 0;
+                if (avgRSSI > 0) {
+                    targetRSSI = avgRSSI + (1.5 * stddevRSSI);
+                } else {
+                    targetRSSI = -1.00;
+                }
                 NSLog(@"avgRSSI %.2f stdev %.2f target %.2f", avgRSSI,stddevRSSI, targetRSSI);
                 
-                if (beacon.proximity >= CLProximityNear && ([[NSDate date] timeIntervalSinceDate: self.journeyStarted] > 30.0) ) {
+                if (beacon.proximity >= CLProximityNear && ([[NSDate date] timeIntervalSinceDate: self.journeyStarted] > 25.0) ) {
                 
                     NSLog(@"beacon proximity %d current speed is %.2f firstRecordedRSSI %.2f currentRSSI %ld", beacon.proximity, [[PSLocationManager sharedLocationManager] currentSpeed], avgRSSI, (long)abs(beacon.rssi));
                     
                     int currentRSSI = abs(beacon.rssi);
-                    if (currentRSSI >= targetRSSI)  {
+                    if (currentRSSI >= targetRSSI || targetRSSI < 0)  {
                         [self sendDebug:[NSString stringWithFormat:@"ready to finalise sent avg RRSI %.2f target rssi %.2f beacon proximity %d current speed is %.2f rssi %d", avgRSSI, targetRSSI, beacon.proximity, [[PSLocationManager sharedLocationManager] currentSpeed], abs(beacon.rssi)]];
                        self.trackingState = EBReadyToFinalise;
                     }

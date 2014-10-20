@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="vXZ-lx-hvc">
     <dependencies>
-        <deployment defaultVersion="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="Monotype  - SlatePro-Bk.otf">
+            <string>SlatePro-Bk</string>
             <string>SlatePro-Bk</string>
             <string>SlatePro-Bk</string>
             <string>SlatePro-Bk</string>
@@ -72,8 +72,11 @@
                                     <action selector="handleUserInteraction:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="1FT-Mh-IDw"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" misplaced="YES" text="Distance" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H1z-ce-Ybf">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Distance" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H1z-ce-Ybf">
                                 <rect key="frame" x="76" y="405" width="159" height="27"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="27" id="Fwo-Kv-ERP"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" name="SlatePro-Bk" family="Slate Pro" pointSize="24"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
@@ -87,35 +90,48 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Time" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="twO-AB-OAL">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Time" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="twO-AB-OAL">
                                 <rect key="frame" x="76" y="433" width="159" height="29"/>
                                 <fontDescription key="fontDescription" name="SlatePro-Bk" family="Slate Pro" pointSize="24"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Gc-Bf-lUJ">
+                                <rect key="frame" x="16" y="64" width="42" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="42" id="2qJ-IU-xeo"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="SlatePro-Bk" family="Slate Pro" pointSize="14"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="QS1-w4-xG2" secondAttribute="bottom" constant="162" id="3ee-zA-90G"/>
-                            <constraint firstItem="veD-Uh-hX3" firstAttribute="centerX" secondItem="H1z-ce-Ybf" secondAttribute="centerX" id="85a-bg-ceF"/>
                             <constraint firstItem="twO-AB-OAL" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="60" id="9GI-Xt-6zc"/>
-                            <constraint firstItem="twO-AB-OAL" firstAttribute="leading" secondItem="H1z-ce-Ybf" secondAttribute="leading" id="Feq-Aa-vco"/>
+                            <constraint firstItem="4Gc-Bf-lUJ" firstAttribute="leading" secondItem="veD-Uh-hX3" secondAttribute="leading" id="BlG-9w-myj"/>
+                            <constraint firstItem="H1z-ce-Ybf" firstAttribute="leading" secondItem="twO-AB-OAL" secondAttribute="leading" id="KRW-8T-M3R"/>
+                            <constraint firstItem="twO-AB-OAL" firstAttribute="top" secondItem="H1z-ce-Ybf" secondAttribute="bottom" constant="1" id="MDd-56-agA"/>
                             <constraint firstItem="veD-Uh-hX3" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" id="OfD-kL-y3y"/>
-                            <constraint firstItem="twO-AB-OAL" firstAttribute="top" secondItem="H1z-ce-Ybf" secondAttribute="bottom" constant="1" id="b9d-Ck-6d9"/>
+                            <constraint firstAttribute="bottom" secondItem="H1z-ce-Ybf" secondAttribute="bottom" constant="136" id="Rmd-gT-AhF"/>
+                            <constraint firstItem="4Gc-Bf-lUJ" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="44" id="ahy-nJ-gwL"/>
                             <constraint firstAttribute="trailingMargin" secondItem="veD-Uh-hX3" secondAttribute="trailing" constant="9" id="eaN-yF-p5G"/>
                             <constraint firstItem="veD-Uh-hX3" firstAttribute="centerX" secondItem="twO-AB-OAL" secondAttribute="centerX" id="f9N-1i-smj"/>
                             <constraint firstItem="bAe-Wb-BuY" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" id="fiP-5c-KlK"/>
-                            <constraint firstItem="H1z-ce-Ybf" firstAttribute="top" secondItem="QS1-w4-xG2" secondAttribute="bottom" constant="-1" id="j31-pY-yFu"/>
+                            <constraint firstItem="4Gc-Bf-lUJ" firstAttribute="baseline" secondItem="veD-Uh-hX3" secondAttribute="baseline" id="j4Y-B7-hK8"/>
                             <constraint firstItem="veD-Uh-hX3" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" id="jXg-CZ-SbT"/>
                             <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="bAe-Wb-BuY" secondAttribute="bottom" constant="8" id="mSe-xX-C4Z"/>
                             <constraint firstItem="veD-Uh-hX3" firstAttribute="leading" secondItem="QS1-w4-xG2" secondAttribute="leading" id="pPP-M8-Rzc"/>
                             <constraint firstItem="bAe-Wb-BuY" firstAttribute="top" secondItem="twO-AB-OAL" secondAttribute="bottom" constant="49" id="qjN-p6-8mG"/>
+                            <constraint firstItem="H1z-ce-Ybf" firstAttribute="trailing" secondItem="twO-AB-OAL" secondAttribute="trailing" id="vIb-gN-XqG"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="controlButton" destination="bAe-Wb-BuY" id="RPK-bW-pmT"/>
                         <outlet property="debugLabel" destination="veD-Uh-hX3" id="SYU-dU-EjI"/>
                         <outlet property="distanceLabel" destination="H1z-ce-Ybf" id="vnr-cs-cAY"/>
+                        <outlet property="gpxStatusLabel" destination="4Gc-Bf-lUJ" id="zaC-1M-dNl"/>
                         <outlet property="timeLabel" destination="twO-AB-OAL" id="nGd-qf-CiR"/>
                         <outlet property="uploadLabel" destination="rDO-L5-L2d" id="kon-AE-ITE"/>
                         <outlet property="uploadSwitch" destination="yte-Pl-SVe" id="BSg-sr-KMu"/>
