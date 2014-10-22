@@ -179,17 +179,16 @@
 }
 
 -(double) getAverageMovingRSSI {
+    
     int total = 0;
     int count = [self.rssiHistory count];
     if (count == 0) {return -1.00;}
     
     for (NSNumber *item in self.rssiHistory) {
-        
         total += [item intValue];
     }
     
-    double average = 1.0 * total / count;
-    return average;
+    return (1.0 * total / count);
 }
 
 -(double) getSTDDevForMovingRSSI {
@@ -212,8 +211,7 @@
     double variance = diffTotal / count; // -1 if sample std deviation
     
     // Standard Deviation, the square root of variance
-    double stdDeviation = sqrt(variance);
-    return stdDeviation;
+    return sqrt(variance);
 }
 
 // fired every second
@@ -283,7 +281,7 @@
                 double stddevRSSI = [self getSTDDevForMovingRSSI];
                 double targetRSSI = 0;
                 if (avgRSSI > 0) {
-                    targetRSSI = avgRSSI + (1.5 * stddevRSSI);
+                    targetRSSI = avgRSSI + (3 * stddevRSSI); // 99% certainty?
                 } else {
                     targetRSSI = -1.00;
                 }
